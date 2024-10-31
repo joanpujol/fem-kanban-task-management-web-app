@@ -11,6 +11,25 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'medium-gray': 'var(--medium-gray)',
+      },
+      fontFamily: {
+        sans: ['var(--font-plus-jakarta-sans)'],
+      },
+      fontSize: {
+        'xl': '24px',
+        'lg': '18px',
+        'md': '15px',
+        'sm': '12px',
+      },
+      lineHeight: {
+        'xl': '30px',
+        'lg': '23px',
+        'md': '19px',
+        'sm': '15px',
+      },
+      letterSpacing: {
+        'widest': '2.4px',
       },
     },
   },

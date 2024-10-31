@@ -1,3 +1,4 @@
+import Header from "@/components/atoms/Header";
 import Image from "next/image";
 
 export default function Home() {
@@ -47,6 +48,12 @@ export default function Home() {
           >
             Read our docs
           </a>
+        </div>
+        <div>
+          <Header size="XL">Extra Large Header</Header>
+          <Header size="LG">Large Header</Header>
+          <Header size="MD">Medium Header</Header>
+          <Header size="SM">Small Header</Header>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
