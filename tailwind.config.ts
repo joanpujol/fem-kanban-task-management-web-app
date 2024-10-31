@@ -20,7 +20,8 @@ const config: Config = {
         'xl': '24px',
         'lg': '18px',
         'md': '15px',
-        'sm': '12px',
+        'sm': '13px',
+        'xs': '12px',
       },
       lineHeight: {
         'xl': '30px',

@@ -1,24 +1,24 @@
 import React from 'react';
 
-type HeaderSize = 'XL' | 'LG' | 'MD' | 'SM';
+type HeaderSize = 'xl' | 'lg' | 'md' | 'sm';
 
 interface HeaderProps {
-  size?: HeaderSize;
+  variant?: HeaderSize;
   children: React.ReactNode;
 }
 
-const Header = ({ size = 'XL', children }: HeaderProps) => {
-  const baseClasses = 'font-bold';
+const Header = ({ variant = 'xl', children }: HeaderProps) => {
+  const baseClasses = 'font-bold font-sans';
   
-  const sizeClasses = {
-    XL: 'text-xl leading-xl',
-    LG: 'text-lg leading-lg',
-    MD: 'text-md leading-md',
-    SM: 'text-sm leading-sm tracking-widest text-medium-gray'
+  const variantClasses = {
+    xl: 'text-xl leading-xl',
+    lg: 'text-lg leading-lg',
+    md: 'text-md leading-md',
+    sm: 'text-xs leading-sm tracking-widest text-medium-gray'
   };
 
   return (
-    <h1 className={`${baseClasses} ${sizeClasses[size]}`}>
+    <h1 className={`${baseClasses} ${variantClasses[variant]}`}>
       {children}
     </h1>
   );
