@@ -1,6 +1,7 @@
 import Header from "@/components/atoms/Header";
 import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
+import CheckboxWithText from "@/components/atoms/CheckboxWithText";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
           <Button>Primary Small</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="destructive">Destructive</Button>
+          <CheckboxWithText label="Checkbox" />
         </div>
       </main>
   );

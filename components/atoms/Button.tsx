@@ -2,7 +2,7 @@ import React from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const button = tv({
-  base: 'font-sans font-bold text-white rounded-md transition-colors duration-200 ease-in-out w-[255px]',
+  base: 'font-sans font-bold text-white transition-colors duration-200 ease-in-out w-[255px]',
   variants: {
     color: {
       primary: 'bg-purple hover:bg-purple-hover',

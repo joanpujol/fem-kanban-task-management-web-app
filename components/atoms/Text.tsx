@@ -6,7 +6,8 @@ const text = tv({
   variants: {
     variant: {
       regular: 'font-medium text-sm leading-lg',
-      bold: 'font-bold text-xs leading-sm'
+      bold: 'font-bold text-xs leading-sm',
+      strikethrough: 'font-bold text-xs leading-sm line-through text-black/50'
     },
   },
   defaultVariants: {
