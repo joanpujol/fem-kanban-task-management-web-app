@@ -12,10 +12,10 @@ export default function Home() {
           <Header variant="sm">Small Header</Header>
           <Text variant="regular">Regular Text</Text>
           <Text variant="bold">Bold Text!</Text>
-          <Button variant="primaryLarge">Primary Large</Button>
-          <Button variant="primarySmall">Primary Small</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="destructive">Destructive</Button>
+          <Button color="primary" size="large">Primary Large</Button>
+          <Button>Primary Small</Button>
+          <Button color="secondary">Secondary</Button>
+          <Button color="destructive">Destructive</Button>
         </div>
       </main>
   );

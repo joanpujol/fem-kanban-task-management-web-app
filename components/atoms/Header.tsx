@@ -1,24 +1,34 @@
 import React from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-type HeaderSize = 'xl' | 'lg' | 'md' | 'sm';
+const header = tv({
+  base: 'font-bold font-sans',
+  variants: {
+    variant: {
+      xl: 'text-xl leading-xl',
+      lg: 'text-lg leading-lg',
+      md: 'text-md leading-md',
+      sm: 'text-xs leading-sm tracking-widest text-medium-gray'
+    },
+  },
+  defaultVariants: {
+    variant: 'xl',
+  },
+});
 
-interface HeaderProps {
-  variant?: HeaderSize;
+type HeaderVariants = VariantProps<typeof header>;
+
+type HeaderProps = HeaderVariants & {
   children: React.ReactNode;
-}
+};
 
-const Header = ({ variant = 'xl', children }: HeaderProps) => {
-  const baseClasses = 'font-bold font-sans';
-  
-  const variantClasses = {
-    xl: 'text-xl leading-xl',
-    lg: 'text-lg leading-lg',
-    md: 'text-md leading-md',
-    sm: 'text-xs leading-sm tracking-widest text-medium-gray'
-  };
-
+const Header = ({ 
+  variant, 
+  children, 
+  ...props 
+}: HeaderProps): JSX.Element => {
   return (
-    <h1 className={`${baseClasses} ${variantClasses[variant]}`}>
+    <h1 className={header({ variant })} {...props}>
       {children}
     </h1>
   );

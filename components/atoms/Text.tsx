@@ -1,23 +1,34 @@
 import React from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-type TextVariant = 'regular' | 'bold';
+const text = tv({
+  base: 'font-sans',
+  variants: {
+    variant: {
+      regular: 'font-medium text-sm leading-lg',
+      bold: 'font-bold text-xs leading-sm'
+    },
+  },
+  defaultVariants: {
+    variant: 'regular',
+  },
+});
 
-interface TextProps {
-  variant?: TextVariant;
+type TextVariants = VariantProps<typeof text>;
+
+type TextProps = TextVariants & {
   children: React.ReactNode;
   className?: string;
-}
+};
 
-const Text = ({ variant = 'regular', children, className = '' }: TextProps) => {
-  const baseClasses = 'font-sans';
-  
-  const variantClasses: Record<TextVariant, string> = {
-    regular: 'font-medium text-sm leading-lg',
-    bold: 'font-bold text-xs leading-sm'
-  };
-
+const Text = ({ 
+  variant, 
+  children, 
+  className,
+  ...props 
+}: TextProps): JSX.Element => {
   return (
-    <p className={`${baseClasses} ${variantClasses[variant]} ${className}`}>
+    <p className={text({ variant, className })} {...props}>
       {children}
     </p>
   );

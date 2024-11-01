@@ -1,30 +1,42 @@
 import React from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-type ButtonVariant = 'primaryLarge' | 'primarySmall' | 'secondary' | 'destructive';
+const button = tv({
+  base: 'font-sans font-bold text-white rounded-md transition-colors duration-200 ease-in-out w-[255px]',
+  variants: {
+    color: {
+      primary: 'bg-purple hover:bg-purple-hover',
+      secondary: 'bg-purple/10 text-purple hover:bg-purple/25',
+      destructive: 'bg-red hover:bg-red-hover',
+    },
+    size: {
+      small: 'h-[40px] text-sm leading-lg rounded-md',
+      large: 'h-[48px] text-md leading-md rounded-lg',
+    },
+  },
+  defaultVariants: {
+    color: 'primary',
+    size: 'small',
+  },
+});
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  children: React.ReactNode;
-}
+type ButtonVariants = VariantProps<typeof button>;
 
-const Button: React.FC<ButtonProps> = ({ 
-  variant = 'primaryLarge', 
-  children, 
-  className = '', 
-  ...props 
-}) => {
-  const baseClasses = 'font-sans font-bold';
-
-  const variantClasses: Record<ButtonVariant, string> = {
-    primaryLarge: 'bg-purple text-white text-md leading-md hover:bg-purple-hover font-bold w-[255px] h-[48px] rounded-lg',
-    primarySmall: 'bg-purple text-white text-sm leading-lg hover:bg-purple-hover w-[255px] h-[40px] rounded-md',
-    secondary: 'bg-purple/10 text-purple text-sm leading-lg hover:bg-purple/25 w-[255px] h-[40px] rounded-md',
-    destructive: 'bg-red text-white text-sm leading-md hover:bg-red-hover w-[255px] h-[40px] rounded-md',
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & 
+  ButtonVariants & {
+    children: React.ReactNode;
   };
 
+const Button = ({ 
+  color,
+  size,
+  children, 
+  className,
+  ...props 
+}: ButtonProps): JSX.Element => {
   return (
     <button 
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={button({ color, size, className })}
       {...props}
     >
       {children}
