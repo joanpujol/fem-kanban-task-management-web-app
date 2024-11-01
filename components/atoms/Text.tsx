@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TextVariant = 'lg' | 'md';
+type TextVariant = 'regular' | 'bold';
 
 interface TextProps {
   variant?: TextVariant;
@@ -8,12 +8,12 @@ interface TextProps {
   className?: string;
 }
 
-const Text = ({ variant = 'lg', children, className = '' }: TextProps) => {
+const Text = ({ variant = 'regular', children, className = '' }: TextProps) => {
   const baseClasses = 'font-sans';
   
   const variantClasses: Record<TextVariant, string> = {
-    lg: 'font-medium text-sm leading-lg',
-    md: 'font-bold text-xs leading-sm'
+    regular: 'font-medium text-sm leading-lg',
+    bold: 'font-bold text-xs leading-sm'
   };
 
   return (

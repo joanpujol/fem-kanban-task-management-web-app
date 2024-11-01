@@ -12,6 +12,10 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         'medium-gray': 'var(--medium-gray)',
+        purple: 'rgba(var(--purple), 1)',
+        'purple-hover': 'var(--purple-hover)',
+        red: 'var(--red)',
+        'red-hover': 'var(--red-hover)',
       },
       fontFamily: {
         sans: ['var(--font-plus-jakarta-sans)'],
@@ -31,6 +35,10 @@ const config: Config = {
       },
       letterSpacing: {
         'widest': '2.4px',
+      },
+      borderRadius: {
+        'md': '20px',
+        'lg': '24px',
       },
     },
   },
