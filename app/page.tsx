@@ -1,8 +1,11 @@
+"use client"
+
 import Header from "@/components/atoms/Header";
 import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
 import CheckboxWithText from "@/components/atoms/CheckboxWithText";
 import TextInput from "@/components/atoms/TextInput";
+import Dropdown from "@/components/atoms/Dropdown";
 
 export default function Home() {
   return (
@@ -20,6 +23,19 @@ export default function Home() {
           <Button color="destructive">Destructive</Button>
           <CheckboxWithText label="Checkbox" />
           <TextInput placeholder="Enter task name" />
+          <div className="ml-[20px]">
+            <Dropdown
+              options={[
+                { value: 'Todo', label: 'Todo' },
+                { value: 'Doing', label: 'Doing' },
+                { value: 'Done', label: 'Done' },
+              ]}
+              placeholder="Todo"
+              onValueChange={(value: string) => {
+                console.log('Selected value:', value);
+              }}
+            />
+          </div>
         </div>
       </main>
   );

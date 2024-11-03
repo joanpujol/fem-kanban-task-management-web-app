@@ -12,10 +12,10 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ placeholder, error, ...props }, ref) => {
     return (
-      <div className="relative max-w-[350px] font-medium text-sm leading-lg">
+      <div className="relative max-w-[350px]">
           <Input
             className={cn(
-              "border-medium-gray/25 rounded-[4px] placeholder:text-black/25",
+              "border-medium-gray/25 px-[16px] rounded-[4px] placeholder:text-black/25 font-medium text-sm leading-lg",
               error && "border-red"
             )}
             ref={ref}
@@ -23,7 +23,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             {...props}
           />
           {error && (
-            <div className="absolute text-red top-[8px] right-[16px]">
+            <div className="absolute text-red top-[8px] right-[16px] font-medium text-sm leading-lg">
               {error}
             </div>
           )}
