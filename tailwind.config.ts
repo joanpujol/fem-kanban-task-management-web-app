@@ -10,9 +10,9 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
-        black: 'rgba(var(--black), 1)',
+			black: 'rgba(var(--black), 1)',
   			'medium-gray': 'rgba(var(--medium-gray), 1)',
-        'light-gray': 'var(--light-gray)',
+			'light-gray': 'var(--light-gray)',
   			purple: 'rgba(var(--purple), 1)',
   			'purple-hover': 'var(--purple-hover)',
   			red: 'var(--red)',
