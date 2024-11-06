@@ -9,7 +9,7 @@ const header = tv({
       xl: 'text-xl leading-xl',
       lg: 'text-lg leading-lg',
       md: 'text-md leading-md',
-      sm: 'text-xs leading-sm tracking-widest text-medium-gray'
+      sm: 'text-xs leading-sm tracking-widest text-medium-gray',
     },
   },
   defaultVariants: {
@@ -24,8 +24,8 @@ type HeaderProps = HeaderVariants & {
   className?: string;
 };
 
-const Header = ({ 
-  variant, 
+const Header = ({
+  variant,
   children,
   className,
   ...props

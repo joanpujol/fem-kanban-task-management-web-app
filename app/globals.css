@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --purple: 99,95,199;
-  --purple-hover: #A8A4FF;
-  --black: 0,1,18;
-  --very-dark-gray: #20212C;
-  --dark-gray: #2B2C37;
-  --dark-lines: #3E3F4E;
-  --medium-gray: 130,143,163;
-  --light-lines: #E4EBFA;
-  --light-gray: #F4F7FD;
-  --white: #FFFFFF;
-  --red: #EA5555;
-  --red-hover: #FF9898;
+  --purple: 99, 95, 199;
+  --purple-hover: #a8a4ff;
+  --black: 0, 1, 18;
+  --very-dark-gray: #20212c;
+  --dark-gray: #2b2c37;
+  --dark-lines: #3e3f4e;
+  --medium-gray: 130, 143, 163;
+  --light-lines: #e4ebfa;
+  --light-gray: #f4f7fd;
+  --white: #ffffff;
+  --red: #ea5555;
+  --red-hover: #ff9898;
 }
 
 body {

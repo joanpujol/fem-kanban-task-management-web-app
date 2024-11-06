@@ -1,5 +1,5 @@
 export interface Subtask {
-    id: string;
-    title: string;
-    isCompleted: boolean;
+  id: string;
+  title: string;
+  isCompleted: boolean;
 }

@@ -22,23 +22,20 @@ const button = tv({
 
 type ButtonVariants = VariantProps<typeof button>;
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & 
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   ButtonVariants & {
     children: React.ReactNode;
   };
 
-const Button = ({ 
+const Button = ({
   color,
   size,
-  children, 
+  children,
   className,
-  ...props 
+  ...props
 }: ButtonProps): JSX.Element => {
   return (
-    <button 
-      className={button({ color, size, className })}
-      {...props}
-    >
+    <button className={button({ color, size, className })} {...props}>
       {children}
     </button>
   );

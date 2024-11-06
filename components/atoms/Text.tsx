@@ -7,7 +7,7 @@ const text = tv({
     variant: {
       regular: 'font-medium text-sm leading-lg',
       bold: 'font-bold text-xs leading-sm',
-      strikethrough: 'font-bold text-xs leading-sm line-through text-black/50'
+      strikethrough: 'font-bold text-xs leading-sm line-through text-black/50',
     },
   },
   defaultVariants: {
@@ -22,11 +22,11 @@ type TextProps = TextVariants & {
   className?: string;
 };
 
-const Text = ({ 
-  variant, 
-  children, 
+const Text = ({
+  variant,
+  children,
   className,
-  ...props 
+  ...props
 }: TextProps): JSX.Element => {
   return (
     <p className={text({ variant, className })} {...props}>
