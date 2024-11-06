@@ -3,10 +3,14 @@ import Dropdown from '../atoms/Dropdown';
 import Text from '../atoms/Text';
 
 interface CurrentStatusProps {
+  status: string;
   onValueChange: (value: string) => void;
 }
 
-const CurrentStatus: React.FC<CurrentStatusProps> = ({ onValueChange }) => {
+const CurrentStatus: React.FC<CurrentStatusProps> = ({
+  status,
+  onValueChange,
+}) => {
   const statuses = useStore((state) => state.statuses);
 
   return (
@@ -18,12 +22,12 @@ const CurrentStatus: React.FC<CurrentStatusProps> = ({ onValueChange }) => {
         options={[
           ...statuses.map((status) => {
             return {
-              value: status.name.toLocaleUpperCase(),
+              value: status.id,
               label: status.name,
             };
           }),
         ]}
-        placeholder={statuses ? statuses[0].name : undefined}
+        placeholder={status}
         onValueChange={(value: string) => {
           onValueChange(value);
         }}

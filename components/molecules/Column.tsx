@@ -1,5 +1,4 @@
 import { Status } from '@/lib/models/Status';
-import useStore from '@/lib/store/useStore';
 import { cn } from '@/lib/utils';
 import Header from '../atoms/Header';
 import Card from '../atoms/Card';
@@ -9,14 +8,18 @@ import ViewTaskDialog from './dialogs/ViewTaskDialog';
 
 interface ColumnProps {
   status: Status;
+  tasks: Task[];
+  className: string;
 }
 
-const Column: React.FC<ColumnProps> = ({ status }) => {
-  const getTasksByColumnId = useStore((state) => state.getTasksByColumnId);
-  const tasks = getTasksByColumnId(status.id);
-
+const Column: React.FC<ColumnProps> = ({ status, tasks, className }) => {
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-y-[24px] gap-x-[12px]">
+    <div
+      className={cn(
+        'grid grid-cols-[auto_1fr] gap-y-[24px] gap-x-[12px]',
+        className
+      )}
+    >
       <div
         style={{ backgroundColor: status.color ? status.color : undefined }}
         className={cn('w-[15px] h-[15px] rounded-full self-center')}
@@ -29,8 +32,8 @@ const Column: React.FC<ColumnProps> = ({ status }) => {
       <div className="col-span-2">
         {tasks.map((task: Task) => (
           <div key={task.id} className="mb-[20px] last:mb-0">
-            <BoardDialog dialogContent={<ViewTaskDialog taskId={task.id} />}>
-              <Card taskId={task.id} />
+            <BoardDialog dialogContent={<ViewTaskDialog task={task} />}>
+              <Card task={task} />
             </BoardDialog>
           </div>
         ))}

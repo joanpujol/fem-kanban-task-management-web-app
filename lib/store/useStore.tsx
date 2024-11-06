@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { produce } from 'immer';
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '../models/Task';
 import { Status } from '../models/Status';
@@ -10,7 +11,6 @@ interface AppState {
   addTask: (task: Omit<Task, 'id'>) => void;
   updateTask: (taskId: string, updates: Partial<Task>) => void;
   deleteTask: (taskId: string) => void;
-  getTasksByColumnId: (columnId: string) => Task[];
   addSubtask: (taskId: string, subtask: Omit<Subtask, 'id'>) => void;
   updateSubtask: (
     taskId: string,
@@ -23,12 +23,12 @@ interface AppState {
   deleteStatus: (statusId: string) => void;
 }
 
-const useStore = create<AppState>((set, get) => ({
+const useStore = create<AppState>((set) => ({
   tasks: [
     {
       id: uuidv4(),
       title: 'Build UI for onboard flow',
-      statusId: '123',
+      statusId: '1',
       description: 'Not just another task',
       subtasks: [
         {
@@ -46,7 +46,25 @@ const useStore = create<AppState>((set, get) => ({
     {
       id: uuidv4(),
       title: 'Build UI for onboard flow',
-      statusId: '123',
+      statusId: '2',
+      description: 'Not just another task',
+      subtasks: [
+        {
+          id: '124',
+          title: 'A subtask',
+          isCompleted: false,
+        },
+        {
+          id: '125',
+          title: 'Another subtask',
+          isCompleted: false,
+        },
+      ],
+    },
+    {
+      id: uuidv4(),
+      title: 'Build UI for onboard flow',
+      statusId: '2',
       description: 'Not just another task',
       subtasks: [
         {
@@ -58,6 +76,24 @@ const useStore = create<AppState>((set, get) => ({
           id: '125',
           title: 'Another subtask',
           isCompleted: false,
+        },
+      ],
+    },
+    {
+      id: uuidv4(),
+      title: 'Build UI for onboard flow',
+      statusId: '3',
+      description: 'Not just another task',
+      subtasks: [
+        {
+          id: '124',
+          title: 'A subtask',
+          isCompleted: true,
+        },
+        {
+          id: '125',
+          title: 'Another subtask',
+          isCompleted: true,
         },
       ],
     },
@@ -65,99 +101,101 @@ const useStore = create<AppState>((set, get) => ({
   statuses: [
     {
       id: '1',
-      name: 'Todo',
+      name: 'TODO',
       color: '#49C4E5',
     },
     {
       id: '2',
-      name: 'Doing',
+      name: 'DOING',
       color: '#8471F2',
     },
     {
       id: '3',
-      name: 'Done',
+      name: 'DONE',
       color: '#67E2AE',
     },
   ],
 
   addTask: (task) =>
-    set((state) => ({
-      tasks: [...state.tasks, { ...task, id: uuidv4() }],
-    })),
+    set(
+      produce((state) => {
+        state.tasks.push({ ...task, id: uuidv4() });
+      })
+    ),
 
   updateTask: (taskId, updates) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId ? { ...task, ...updates } : task
-      ),
-    })),
+    set(
+      produce((state) => {
+        const task = state.tasks.find((task: Task) => task.id === taskId);
+        if (task) Object.assign(task, updates);
+      })
+    ),
 
   deleteTask: (taskId) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== taskId),
-    })),
-
-  getTasksByColumnId: (columnId: string) => {
-    const { tasks } = get();
-    return tasks.filter((task: Task) => task.statusId === columnId);
-  },
+    set(
+      produce((state) => {
+        state.tasks = state.tasks.filter((task: Task) => task.id !== taskId);
+      })
+    ),
 
   addSubtask: (taskId, subtask) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              subtasks: [...task.subtasks, { ...subtask, id: uuidv4() }],
-            }
-          : task
-      ),
-    })),
+    set(
+      produce((state) => {
+        const task = state.tasks.find((task: Task) => task.id === taskId);
+        if (task) task.subtasks.push({ ...subtask, id: uuidv4() });
+      })
+    ),
 
   updateSubtask: (taskId, subtaskId, updates) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              subtasks: task.subtasks.map((subtask) =>
-                subtask.id === subtaskId ? { ...subtask, ...updates } : subtask
-              ),
-            }
-          : task
-      ),
-    })),
+    set(
+      produce((state) => {
+        const task = state.tasks.find((task: Task) => task.id === taskId);
+        if (task) {
+          const subtask = task.subtasks.find(
+            (subtask: Subtask) => subtask.id === subtaskId
+          );
+          if (subtask) Object.assign(subtask, updates);
+        }
+      })
+    ),
 
   deleteSubtask: (taskId, subtaskId) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              subtasks: task.subtasks.filter(
-                (subtask) => subtask.id !== subtaskId
-              ),
-            }
-          : task
-      ),
-    })),
+    set(
+      produce((state) => {
+        const task = state.tasks.find((task: Task) => task.id === taskId);
+        if (task) {
+          task.subtasks = task.subtasks.filter(
+            (subtask: Subtask) => subtask.id !== subtaskId
+          );
+        }
+      })
+    ),
 
   addStatus: (status) =>
-    set((state) => ({
-      statuses: [...state.statuses, { ...status, id: uuidv4() }],
-    })),
+    set(
+      produce((state) => {
+        state.statuses.push({ ...status, id: uuidv4() });
+      })
+    ),
 
   updateStatus: (statusId, updates) =>
-    set((state) => ({
-      statuses: state.statuses.map((status) =>
-        status.id === statusId ? { ...status, ...updates } : status
-      ),
-    })),
+    set(
+      produce((state) => {
+        const status = state.statuses.find(
+          (status: Status) => status.id === statusId
+        );
+        if (status) Object.assign(status, updates);
+      })
+    ),
 
   deleteStatus: (statusId) =>
-    set((state) => ({
-      statuses: state.statuses.filter((status) => status.id !== statusId),
-    })),
+    set(
+      produce((state) => {
+        state.statuses = state.statuses.filter(
+          (status: Status) => status.id !== statusId
+        );
+      })
+    ),
 }));
 
 export default useStore;

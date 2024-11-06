@@ -5,20 +5,22 @@ import { Subtask } from '@/lib/models/Subtask';
 import CurrentStatus from '../CurrentStatus';
 import useStore from '@/lib/store/useStore';
 import { useCallback } from 'react';
+import { Task } from '@/lib/models/Task';
 
 interface ViewTaskDialogProps {
-  taskId: string;
+  task: Task;
 }
 
-const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ taskId }) => {
-  const task = useStore((state) =>
-    state.tasks.find((task) => task.id === taskId)
-  );
+const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
   const updateSubtask = useStore((state) => state.updateSubtask);
+  const updateTask = useStore((state) => state.updateTask);
 
-  // Throw an error if task is not found
-  if (!task) {
-    throw new Error(`Task with id ${taskId} not found`);
+  const status = useStore((state) =>
+    state.statuses.find((status) => status.id === task.statusId)
+  );
+
+  if (!status) {
+    throw new Error(`Status with id ${status} not found`);
   }
 
   const completedTasks = task.subtasks.filter(
@@ -34,7 +36,7 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ taskId }) => {
   );
 
   const onCurrentStatusChange = (value: string) => {
-    console.log(value);
+    updateTask(task.id, { statusId: value });
   };
 
   return (
@@ -82,7 +84,10 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ taskId }) => {
         </div>
       </div>
 
-      <CurrentStatus onValueChange={onCurrentStatusChange} />
+      <CurrentStatus
+        status={status.name}
+        onValueChange={onCurrentStatusChange}
+      />
     </div>
   );
 };
