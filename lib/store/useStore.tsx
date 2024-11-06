@@ -12,7 +12,11 @@ interface AppState {
   deleteTask: (taskId: string) => void;
   getTasksByColumnId: (columnId: string) => Task[];
   addSubtask: (taskId: string, subtask: Omit<Subtask, 'id'>) => void;
-  updateSubtask: (taskId: string, subtaskId: string, updates: Partial<Subtask>) => void;
+  updateSubtask: (
+    taskId: string,
+    subtaskId: string,
+    updates: Partial<Subtask>
+  ) => void;
   deleteSubtask: (taskId: string, subtaskId: string) => void;
   addStatus: (status: Omit<Status, 'id'>) => void;
   updateStatus: (statusId: string, updates: Partial<Status>) => void;
@@ -23,104 +27,137 @@ const useStore = create<AppState>((set, get) => ({
   tasks: [
     {
       id: uuidv4(),
-      title: "Build UI for onboard flow",
-      statusId: "123",
-      description: "Not just another task",
+      title: 'Build UI for onboard flow',
+      statusId: '123',
+      description: 'Not just another task',
       subtasks: [
         {
-          id: "124",
-          title: "A subtask",
-          isCompleted: true
+          id: '124',
+          title: 'A subtask',
+          isCompleted: true,
         },
         {
-          id: "125",
-          title: "Another subtask",
-          isCompleted: false
-        }
-      ]
+          id: '125',
+          title: 'Another subtask',
+          isCompleted: false,
+        },
+      ],
     },
     {
       id: uuidv4(),
-      title: "Build UI for onboard flow",
-      statusId: "123",
-      description: "Not just another task",
+      title: 'Build UI for onboard flow',
+      statusId: '123',
+      description: 'Not just another task',
       subtasks: [
         {
-          id: "124",
-          title: "A subtask",
-          isCompleted: true
+          id: '124',
+          title: 'A subtask',
+          isCompleted: true,
         },
         {
-          id: "125",
-          title: "Another subtask",
-          isCompleted: false
-        }
-      ]
+          id: '125',
+          title: 'Another subtask',
+          isCompleted: false,
+        },
+      ],
     },
   ],
-  statuses: [],
+  statuses: [
+    {
+      id: '1',
+      name: 'Todo',
+      color: '#49C4E5',
+    },
+    {
+      id: '2',
+      name: 'Doing',
+      color: '#8471F2',
+    },
+    {
+      id: '3',
+      name: 'Done',
+      color: '#67E2AE',
+    },
+  ],
 
-  addTask: (task) => set((state) => ({
-    tasks: [...state.tasks, { ...task, id: uuidv4() }]
-  })),
+  addTask: (task) =>
+    set((state) => ({
+      tasks: [...state.tasks, { ...task, id: uuidv4() }],
+    })),
 
-  updateTask: (taskId, updates) => set((state) => ({
-    tasks: state.tasks.map(task => 
-      task.id === taskId ? { ...task, ...updates } : task
-    )
-  })),
+  updateTask: (taskId, updates) =>
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId ? { ...task, ...updates } : task
+      ),
+    })),
 
-  deleteTask: (taskId) => set((state) => ({
-    tasks: state.tasks.filter(task => task.id !== taskId)
-  })),
+  deleteTask: (taskId) =>
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== taskId),
+    })),
 
   getTasksByColumnId: (columnId: string) => {
     const { tasks } = get();
     return tasks.filter((task: Task) => task.statusId === columnId);
   },
 
-  addSubtask: (taskId, subtask) => set((state) => ({
-    tasks: state.tasks.map(task => 
-      task.id === taskId 
-        ? { ...task, subtasks: [...task.subtasks, { ...subtask, id: uuidv4() }] }
-        : task
-    )
-  })),
+  addSubtask: (taskId, subtask) =>
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subtasks: [...task.subtasks, { ...subtask, id: uuidv4() }],
+            }
+          : task
+      ),
+    })),
 
-  updateSubtask: (taskId, subtaskId, updates) => set((state) => ({
-    tasks: state.tasks.map(task => 
-      task.id === taskId 
-        ? {
-            ...task,
-            subtasks: task.subtasks.map(subtask => 
-              subtask.id === subtaskId ? { ...subtask, ...updates } : subtask
-            )
-          }
-        : task
-    )
-  })),
+  updateSubtask: (taskId, subtaskId, updates) =>
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subtasks: task.subtasks.map((subtask) =>
+                subtask.id === subtaskId ? { ...subtask, ...updates } : subtask
+              ),
+            }
+          : task
+      ),
+    })),
 
-  deleteSubtask: (taskId, subtaskId) => set((state) => ({
-    tasks: state.tasks.map(task => 
-      task.id === taskId 
-        ? { ...task, subtasks: task.subtasks.filter(subtask => subtask.id !== subtaskId) }
-        : task
-    )
-  })),
+  deleteSubtask: (taskId, subtaskId) =>
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subtasks: task.subtasks.filter(
+                (subtask) => subtask.id !== subtaskId
+              ),
+            }
+          : task
+      ),
+    })),
 
-  addStatus: (status) => set((state) => ({
-    statuses: [...state.statuses, { ...status, id: uuidv4() }]
-  })),
+  addStatus: (status) =>
+    set((state) => ({
+      statuses: [...state.statuses, { ...status, id: uuidv4() }],
+    })),
 
-  updateStatus: (statusId, updates) => set((state) => ({
-    statuses: state.statuses.map(status => 
-      status.id === statusId ? { ...status, ...updates } : status
-    )
-  })),
+  updateStatus: (statusId, updates) =>
+    set((state) => ({
+      statuses: state.statuses.map((status) =>
+        status.id === statusId ? { ...status, ...updates } : status
+      ),
+    })),
 
-  deleteStatus: (statusId) => set((state) => ({
-    statuses: state.statuses.filter(status => status.id !== statusId)
-  })),
+  deleteStatus: (statusId) =>
+    set((state) => ({
+      statuses: state.statuses.filter((status) => status.id !== statusId),
+    })),
 }));
 
 export default useStore;

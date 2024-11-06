@@ -1,12 +1,19 @@
-import { Task } from "@/lib/models/Task";
 import Text from "./Text";
 import Header from "./Header";
+import useStore from "@/lib/store/useStore";
 
 interface CardProps {
-    task: Task
+    taskId: string
   }
   
-const Card: React.FC<CardProps> = ({task}) => {
+const Card: React.FC<CardProps> = ({taskId}) => {
+    const task = useStore(state => state.tasks.find(task => task.id === taskId));
+
+    // Throw an error if task is not found
+    if (!task) {
+        throw new Error(`Task with id ${taskId} not found`);
+    }
+    
     const completedTasks = task.subtasks.filter(subtask => subtask.isCompleted).length;
     const totalTasks = task.subtasks.length;
 

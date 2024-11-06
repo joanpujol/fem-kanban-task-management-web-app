@@ -19,7 +19,6 @@ interface DropdownProps {
   placeholder?: string;
   onValueChange?: (value: string) => void;
   defaultValue?: string;
-  className?: string;
   disabled?: boolean;
 }
 
@@ -32,7 +31,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   return (
     <Select onValueChange={onValueChange} defaultValue={defaultValue} disabled={disabled}>
-      <SelectTrigger className="focus:outline-none focus:ring-0 data-[state=open]:border-purple max-w-[350px] rounded-[4px] px-[16px] font-medium text-sm leading-lg ">
+      <SelectTrigger className="focus:outline-none focus:ring-0 data-[state=open]:border-purple rounded-[4px] px-[16px] font-medium text-sm leading-lg ">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className="rounded-[8px]">
