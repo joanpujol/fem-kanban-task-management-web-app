@@ -29,7 +29,8 @@ const useStore = create<AppState>((set) => ({
       id: uuidv4(),
       title: 'Build UI for onboard flow',
       statusId: '1',
-      description: 'Not just another task',
+      description:
+        'Not just another task, lorem ipsum dolor sit amet, this will be a long text.',
       subtasks: [
         {
           id: '124',

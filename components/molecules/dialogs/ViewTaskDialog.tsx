@@ -7,6 +7,8 @@ import useStore from '@/lib/store/useStore';
 import { useCallback } from 'react';
 import { Task } from '@/lib/models/Task';
 import BoardPopover from '@/components/atoms/BoardPopover';
+import BoardDialog from '../BoardDialog';
+import EditTaskDialog from './EditTaskDialog';
 
 interface ViewTaskDialogProps {
   task: Task;
@@ -49,7 +51,9 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
         <BoardPopover
           popoverContent={
             <>
-              <Text className="text-medium-gray">Edit Task</Text>
+              <BoardDialog dialogContent={<EditTaskDialog task={task} />}>
+                <Text className="text-medium-gray">Edit Task</Text>
+              </BoardDialog>
               <Text className="text-red">Delete Task</Text>
             </>
           }
@@ -68,9 +72,7 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
         </BoardPopover>
       </div>
       <Text variant="regular" className="text-medium-gray">
-        We know what we&apos;re planning to build for version one. Now we need
-        to finalise the first pricing model we&apos;ll use. Keep iterating the
-        subtasks until we have a coherent proposition.
+        {task.description}
       </Text>
 
       <div>

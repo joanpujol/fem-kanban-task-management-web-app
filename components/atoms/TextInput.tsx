@@ -6,13 +6,15 @@ import { cn } from '@/lib/utils';
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
+  value?: string;
+  className?: string;
   error?: string;
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ placeholder, error, ...props }, ref) => {
+  ({ placeholder, value, className, error, ...props }, ref) => {
     return (
-      <div className="relative max-w-[350px]">
+      <div className={cn('relative max-w-[350px]', className)}>
         <Input
           className={cn(
             'border-medium-gray/25 px-[16px] rounded-[4px] placeholder:text-black/25 font-medium text-sm leading-lg',
@@ -20,6 +22,8 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           )}
           ref={ref}
           placeholder={placeholder}
+          value={value}
+          type="text"
           {...props}
         />
         {error && (
