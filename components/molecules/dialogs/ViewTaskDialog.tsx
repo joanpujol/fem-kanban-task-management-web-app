@@ -6,6 +6,7 @@ import CurrentStatus from '../CurrentStatus';
 import useStore from '@/lib/store/useStore';
 import { useCallback } from 'react';
 import { Task } from '@/lib/models/Task';
+import BoardPopover from '@/components/atoms/BoardPopover';
 
 interface ViewTaskDialogProps {
   task: Task;
@@ -45,17 +46,26 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
         <Header variant="lg" className="flex-1">
           {task.title}
         </Header>
-        <svg
-          width="5"
-          height="20"
-          viewBox="0 0 5 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <BoardPopover
+          popoverContent={
+            <>
+              <Text className="text-medium-gray">Edit Task</Text>
+              <Text className="text-red">Delete Task</Text>
+            </>
+          }
         >
-          <circle cx="2.30769" cy="2.30769" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="10.0001" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="17.6925" r="2.30769" fill="#828FA3" />
-        </svg>
+          <svg
+            width="5"
+            height="20"
+            viewBox="0 0 5 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="2.30769" cy="2.30769" r="2.30769" fill="#828FA3" />
+            <circle cx="2.30769" cy="10.0001" r="2.30769" fill="#828FA3" />
+            <circle cx="2.30769" cy="17.6925" r="2.30769" fill="#828FA3" />
+          </svg>
+        </BoardPopover>
       </div>
       <Text variant="regular" className="text-medium-gray">
         We know what we&apos;re planning to build for version one. Now we need
