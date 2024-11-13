@@ -6,11 +6,14 @@ interface DynamicTextInputListProps {
   onInputsChange: (newInputs: string[]) => void;
   actionButtonText: string;
   initialValues?: string[];
+  errors?: string[];
 }
+
 const DynamicTextInputList: React.FC<DynamicTextInputListProps> = ({
   onInputsChange,
   actionButtonText,
   initialValues,
+  errors = [],
 }) => {
   const [inputs, setInputs] = useState(initialValues ?? ['']);
 
@@ -45,6 +48,11 @@ const DynamicTextInputList: React.FC<DynamicTextInputListProps> = ({
               className="max-w-full w-full"
               onChange={(e) => handleInputChange(index, e.target.value)}
               placeholder={'e.g. Add some text to this subtask'}
+              error={
+                errors.length > index && errors[index].length
+                  ? errors[index]
+                  : undefined
+              }
             />
             <button
               className="h-[14.75px] w-[14.75px]"

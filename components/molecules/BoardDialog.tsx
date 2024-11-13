@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface BoardDialogProps {
-  dialogContent: React.ReactNode;
+  dialogContent: React.ReactElement;
   children: React.ReactNode;
 }
 const BoardDialog: React.FC<BoardDialogProps> = ({
@@ -12,6 +12,7 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleOpenDialog = () => setIsOpen(true);
+  const handleCloseDialog = () => setIsOpen(false);
 
   return (
     <>
@@ -20,7 +21,9 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="rounded-[6px] w-[480px] focus:outline-none p-[32px]">
-          {dialogContent}
+          {React.cloneElement(dialogContent, {
+            closeDialog: handleCloseDialog,
+          })}
         </DialogContent>
       </Dialog>
     </>
