@@ -9,6 +9,7 @@ import { Task } from '@/lib/models/Task';
 import BoardPopover from '@/components/atoms/BoardPopover';
 import BoardDialog from '../BoardDialog';
 import EditTaskDialog from './EditTaskDialog';
+import DeleteTaskDialog from './DeleteTaskDialog';
 
 interface ViewTaskDialogProps {
   task: Task;
@@ -54,7 +55,11 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
               <BoardDialog dialogContent={<EditTaskDialog task={task} />}>
                 <Text className="text-medium-gray">Edit Task</Text>
               </BoardDialog>
-              <Text className="text-red">Delete Task</Text>
+              <BoardDialog
+                dialogContent={<DeleteTaskDialog taskId={task.id} />}
+              >
+                <Text className="text-red">Delete Task</Text>
+              </BoardDialog>
             </>
           }
         >

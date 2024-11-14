@@ -20,7 +20,7 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
         {children}
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="rounded-[6px] w-[480px] focus:outline-none p-[32px]">
+        <DialogContent className="rounded-[6px] max-w-[480px] focus:outline-none p-[32px]">
           {React.cloneElement(dialogContent, {
             closeDialog: handleCloseDialog,
           })}
