@@ -102,6 +102,7 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
       </div>
 
       <CurrentStatus
+        title="Current Status"
         status={status.name}
         onValueChange={onCurrentStatusChange}
       />

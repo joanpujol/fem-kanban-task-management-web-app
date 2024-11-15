@@ -1,5 +1,7 @@
 import Button from '../atoms/Button';
 import Header from '../atoms/Header';
+import BoardDialog from './BoardDialog';
+import CreateTaskDialog from './dialogs/CreateTaskDialog';
 
 const BoardTopBar: React.FC = () => {
   return (
@@ -43,7 +45,9 @@ const BoardTopBar: React.FC = () => {
       <Header variant="xl" className="flex-1">
         Platform Launch
       </Header>
-      <Button className="w-[164px]">+ Add New Task</Button>
+      <BoardDialog dialogContent={<CreateTaskDialog />}>
+        <Button className="w-[164px]">+ Add New Task</Button>
+      </BoardDialog>
       <div className="mx-[24px]">
         <svg
           width="5"

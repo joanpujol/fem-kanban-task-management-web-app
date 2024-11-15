@@ -4,12 +4,10 @@ import Header from '@/components/atoms/Header';
 import Text from '@/components/atoms/Text';
 import CurrentStatus from '../CurrentStatus';
 import useStore from '@/lib/store/useStore';
-import { Task } from '@/lib/models/Task';
 import TextInput from '@/components/atoms/TextInput';
 import BoardTextArea from '@/components/atoms/BoardTextArea';
 import Button from '@/components/atoms/Button';
 import DynamicTextInputList from '../DynamicTextInputList';
-import { Subtask } from '@/lib/models/Subtask';
 import { useState } from 'react';
 
 const TaskSchema = z.object({
@@ -32,26 +30,25 @@ const TaskSchema = z.object({
 
 type TaskSchemaType = z.infer<typeof TaskSchema>;
 
-interface EditTaskDialogProps {
-  task: Task;
+interface CreateTaskDialogProps {
   closeDialog?: () => void;
 }
 
-const EditTaskDialog: React.FC<EditTaskDialogProps> = ({
-  task,
-  closeDialog,
-}) => {
-  const updateTask = useStore((state) => state.updateTask);
+const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({ closeDialog }) => {
+  const addTask = useStore((state) => state.addTask);
   const statuses = useStore((state) => state.statuses);
 
-  const [title, setTitle] = useState(task.title);
-  const [description, setDescription] = useState(task.description);
-  const [subtasks, setSubtasks] = useState(
-    task.subtasks.map((subtask) => subtask.title)
-  );
-  const [statusId, setStatusId] = useState(task.statusId);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [subtasks, setSubtasks] = useState(['', '']);
+
   const [errors, setErrors] = useState<Partial<TaskSchemaType>>({});
 
+  if (!statuses.length) {
+    throw new Error('A minimum of one column is required');
+  }
+
+  const [statusId, setStatusId] = useState(statuses[0].id);
   const status = statuses.find((status) => status.id === statusId);
 
   if (!status) {
@@ -86,17 +83,15 @@ const EditTaskDialog: React.FC<EditTaskDialogProps> = ({
       return;
     }
 
-    updateTask(task.id, {
+    addTask({
       title,
       description,
+      statusId,
       subtasks: subtasks.map((title) => ({
         id: uuidv4(),
         title,
-        isCompleted:
-          task.subtasks?.find((subtask) => subtask.title === title)
-            ?.isCompleted || false,
+        isCompleted: false,
       })),
-      statusId,
     });
 
     if (closeDialog) closeDialog();
@@ -105,7 +100,7 @@ const EditTaskDialog: React.FC<EditTaskDialogProps> = ({
   return (
     <div className="grid grid-cols-1 gap-[24px]">
       <Header variant="lg" className="flex-1">
-        Edit Task
+        Add New Task
       </Header>
       <div>
         <Text variant="bold" className="text-medium-gray mb-[8px]">
@@ -140,8 +135,8 @@ recharge the batteries a little."
         <DynamicTextInputList
           actionButtonText="+ Add New Subtask"
           initialValues={[
-            ...task.subtasks.map((subtask: Subtask) => {
-              return subtask.title;
+            ...subtasks.map((subtask: string) => {
+              return subtask;
             }),
           ]}
           onInputsChange={(values: string[]) => {
@@ -162,10 +157,10 @@ recharge the batteries a little."
         className="w-full"
         onClick={onSaveChangesButtonClicked}
       >
-        Save Changes
+        Create Task
       </Button>
     </div>
   );
 };
 
-export default EditTaskDialog;
+export default CreateTaskDialog;
