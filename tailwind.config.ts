@@ -17,6 +17,7 @@ const config: Config = {
         'purple-hover': 'var(--purple-hover)',
         red: 'var(--red)',
         'red-hover': 'var(--red-hover)',
+        'light-lines': 'var(--light-lines)',
       },
       fontFamily: {
         sans: ['var(--font-plus-jakarta-sans)'],

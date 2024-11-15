@@ -1,5 +1,6 @@
 'use client';
 
+import BoardTopBar from '@/components/molecules/BoardTopBar';
 import Column from '@/components/molecules/Column';
 import useStore from '@/lib/store/useStore';
 
@@ -8,8 +9,9 @@ export default function Home() {
   const tasks = useStore((state) => state.tasks);
 
   return (
-    <main className="h-screen p-[24px] bg-light-gray">
-      <div className="flex flex-row gap-[24px]">
+    <main className="h-screen bg-light-gray">
+      <BoardTopBar />
+      <div className="flex flex-row gap-[24px] p-[24px]">
         {statuses.map((status) => {
           return (
             <Column
