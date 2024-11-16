@@ -4,7 +4,7 @@ import Header from '../atoms/Header';
 import Card from '../atoms/Card';
 import { Task } from '@/lib/models/Task';
 import BoardDialog from './BoardDialog';
-import ViewTaskDialog from './dialogs/ViewTaskDialog';
+import ViewTaskDialog from '../organisms/dialogs/ViewTaskDialog';
 
 interface ColumnProps {
   status: Status;

@@ -1,7 +1,7 @@
 import Button from '../atoms/Button';
 import Header from '../atoms/Header';
 import BoardDialog from './BoardDialog';
-import CreateTaskDialog from './dialogs/CreateTaskDialog';
+import CreateTaskDialog from '../organisms/dialogs/CreateTaskDialog';
 
 const BoardTopBar: React.FC = () => {
   return (

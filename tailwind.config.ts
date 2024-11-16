@@ -18,6 +18,7 @@ const config: Config = {
         red: 'var(--red)',
         'red-hover': 'var(--red-hover)',
         'light-lines': 'var(--light-lines)',
+        lines: 'rgba(var(--lines), 1)',
       },
       fontFamily: {
         sans: ['var(--font-plus-jakarta-sans)'],

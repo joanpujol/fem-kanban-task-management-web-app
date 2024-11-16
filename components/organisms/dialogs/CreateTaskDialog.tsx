@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 import Header from '@/components/atoms/Header';
 import Text from '@/components/atoms/Text';
-import CurrentStatus from '../CurrentStatus';
+import CurrentStatus from '../../molecules/CurrentStatus';
 import useStore from '@/lib/store/useStore';
 import TextInput from '@/components/atoms/TextInput';
 import BoardTextArea from '@/components/atoms/BoardTextArea';
 import Button from '@/components/atoms/Button';
-import DynamicTextInputList from '../DynamicTextInputList';
+import DynamicTextInputList from '../../molecules/DynamicTextInputList';
 import { useState } from 'react';
 
 const TaskSchema = z.object({

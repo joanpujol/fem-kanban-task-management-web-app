@@ -2,12 +2,12 @@ import CheckboxWithText from '@/components/atoms/CheckboxWithText';
 import Header from '@/components/atoms/Header';
 import Text from '@/components/atoms/Text';
 import { Subtask } from '@/lib/models/Subtask';
-import CurrentStatus from '../CurrentStatus';
+import CurrentStatus from '../../molecules/CurrentStatus';
 import useStore from '@/lib/store/useStore';
 import { useCallback } from 'react';
 import { Task } from '@/lib/models/Task';
 import BoardPopover from '@/components/atoms/BoardPopover';
-import BoardDialog from '../BoardDialog';
+import BoardDialog from '../../molecules/BoardDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 
