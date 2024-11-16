@@ -19,12 +19,18 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
   const updateSubtask = useStore((state) => state.updateSubtask);
   const updateTask = useStore((state) => state.updateTask);
 
-  const status = useStore((state) =>
-    state.statuses.find((status) => status.id === task.statusId)
+  const statuses = useStore(
+    (state) => state.boards.find((board) => board.id === task.boardId)?.statuses
   );
 
-  if (!status) {
-    throw new Error(`Status with id ${status} not found`);
+  if (!statuses) {
+    throw new Error('List of statuses not found');
+  }
+
+  const currentStatus = statuses.find((status) => status.id === task.statusId);
+
+  if (!currentStatus) {
+    throw new Error(`Status with id ${task.statusId} not found`);
   }
 
   const completedTasks = task.subtasks.filter(
@@ -103,7 +109,8 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
 
       <CurrentStatus
         title="Current Status"
-        status={status.name}
+        statuses={statuses}
+        currentStatus={currentStatus.name}
         onValueChange={onCurrentStatusChange}
       />
     </div>

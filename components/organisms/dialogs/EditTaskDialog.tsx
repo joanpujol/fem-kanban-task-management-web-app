@@ -41,9 +41,6 @@ const EditTaskDialog: React.FC<EditTaskDialogProps> = ({
   task,
   closeDialog,
 }) => {
-  const updateTask = useStore((state) => state.updateTask);
-  const statuses = useStore((state) => state.statuses);
-
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [subtasks, setSubtasks] = useState(
@@ -52,10 +49,19 @@ const EditTaskDialog: React.FC<EditTaskDialogProps> = ({
   const [statusId, setStatusId] = useState(task.statusId);
   const [errors, setErrors] = useState<Partial<TaskSchemaType>>({});
 
-  const status = statuses.find((status) => status.id === statusId);
+  const updateTask = useStore((state) => state.updateTask);
+  const statuses = useStore(
+    (state) => state.boards.find((board) => board.id === task.boardId)?.statuses
+  );
 
-  if (!status) {
-    throw new Error(`Status with id ${status} not found`);
+  if (!statuses) {
+    throw new Error('List of statuses not found');
+  }
+
+  const currentStatus = statuses.find((status) => status.id === statusId);
+
+  if (!currentStatus) {
+    throw new Error(`Status with id ${statusId} not found`);
   }
 
   const onSaveChangesButtonClicked = () => {
@@ -153,7 +159,8 @@ recharge the batteries a little."
 
       <CurrentStatus
         title="Status"
-        status={status.name}
+        statuses={statuses}
+        currentStatus={currentStatus.name}
         onValueChange={(newValue) => setStatusId(newValue)}
       />
 

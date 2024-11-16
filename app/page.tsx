@@ -4,16 +4,26 @@ import Header from '@/components/atoms/Header';
 import BoardTopBar from '@/components/molecules/BoardTopBar';
 import Column from '@/components/molecules/Column';
 import useStore from '@/lib/store/useStore';
+import { useState } from 'react';
 
 export default function Home() {
-  const statuses = useStore((state) => state.statuses);
-  const tasks = useStore((state) => state.tasks);
+  const [currentBoardId] = useState('123');
+
+  const allBoards = useStore((state) => state.boards);
+  const board = allBoards.find((board) => board.id === currentBoardId);
+
+  if (!board) {
+    throw new Error('No Board was found with the provided id');
+  }
+
+  const allTasks = useStore((state) => state.tasks);
+  const tasks = allTasks.filter((task) => task.boardId === board.id);
 
   return (
     <main className="min-h-screen bg-light-gray">
-      <BoardTopBar />
+      <BoardTopBar board={board} />
       <div className="flex flex-row gap-[24px] p-[24px] min-h-[calc(100vh-96px)]">
-        {statuses.map((status) => {
+        {board.statuses.map((status) => {
           return (
             <Column
               key={status.id}

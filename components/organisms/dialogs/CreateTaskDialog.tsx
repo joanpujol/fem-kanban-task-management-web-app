@@ -9,6 +9,7 @@ import BoardTextArea from '@/components/atoms/BoardTextArea';
 import Button from '@/components/atoms/Button';
 import DynamicTextInputList from '../../molecules/DynamicTextInputList';
 import { useState } from 'react';
+import { Board } from '@/lib/models/Board';
 
 const TaskSchema = z.object({
   title: z.string().min(1, "Can't be empty"),
@@ -31,28 +32,31 @@ const TaskSchema = z.object({
 type TaskSchemaType = z.infer<typeof TaskSchema>;
 
 interface CreateTaskDialogProps {
+  board: Board;
   closeDialog?: () => void;
 }
 
-const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({ closeDialog }) => {
-  const addTask = useStore((state) => state.addTask);
-  const statuses = useStore((state) => state.statuses);
-
+const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({
+  board,
+  closeDialog,
+}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subtasks, setSubtasks] = useState(['', '']);
-
   const [errors, setErrors] = useState<Partial<TaskSchemaType>>({});
+
+  const addTask = useStore((state) => state.addTask);
+  const statuses = board.statuses;
 
   if (!statuses.length) {
     throw new Error('A minimum of one column is required');
   }
 
   const [statusId, setStatusId] = useState(statuses[0].id);
-  const status = statuses.find((status) => status.id === statusId);
+  const currentStatus = statuses.find((status) => status.id === statusId);
 
-  if (!status) {
-    throw new Error(`Status with id ${status} not found`);
+  if (!currentStatus) {
+    throw new Error(`Status with id ${statusId} not found`);
   }
 
   const onSaveChangesButtonClicked = () => {
@@ -87,6 +91,7 @@ const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({ closeDialog }) => {
       title,
       description,
       statusId,
+      boardId: board.id,
       subtasks: subtasks.map((title) => ({
         id: uuidv4(),
         title,
@@ -148,7 +153,8 @@ recharge the batteries a little."
 
       <CurrentStatus
         title="Status"
-        status={status.name}
+        statuses={statuses}
+        currentStatus={currentStatus.name}
         onValueChange={(newValue) => setStatusId(newValue)}
       />
 

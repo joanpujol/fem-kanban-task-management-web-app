@@ -6,4 +6,5 @@ export interface Task {
   description: string;
   subtasks: Subtask[];
   statusId: string;
+  boardId: string;
 }

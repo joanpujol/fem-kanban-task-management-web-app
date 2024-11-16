@@ -1,20 +1,20 @@
-import useStore from '@/lib/store/useStore';
 import Dropdown from '../atoms/Dropdown';
 import Text from '../atoms/Text';
+import { Status } from '@/lib/models/Status';
 
 interface CurrentStatusProps {
   title: string;
-  status: string;
+  currentStatus: string;
+  statuses: Status[];
   onValueChange: (value: string) => void;
 }
 
 const CurrentStatus: React.FC<CurrentStatusProps> = ({
   title,
-  status,
+  currentStatus,
+  statuses,
   onValueChange,
 }) => {
-  const statuses = useStore((state) => state.statuses);
-
   return (
     <div>
       <Text variant="bold" className="text-medium-gray mb-[8px]">
@@ -29,7 +29,7 @@ const CurrentStatus: React.FC<CurrentStatusProps> = ({
             };
           }),
         ]}
-        placeholder={status}
+        placeholder={currentStatus}
         onValueChange={(value: string) => {
           onValueChange(value);
         }}

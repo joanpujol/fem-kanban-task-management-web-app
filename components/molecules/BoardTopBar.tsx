@@ -2,8 +2,13 @@ import Button from '../atoms/Button';
 import Header from '../atoms/Header';
 import BoardDialog from './BoardDialog';
 import CreateTaskDialog from '../organisms/dialogs/CreateTaskDialog';
+import { Board } from '@/lib/models/Board';
 
-const BoardTopBar: React.FC = () => {
+interface BoardTopBarProps {
+  board: Board;
+}
+
+const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
   return (
     <div className="flex items-center bg-white h-[96px]">
       <div className="ml-[24px]">
@@ -43,9 +48,9 @@ const BoardTopBar: React.FC = () => {
       </div>
       <div className="h-[96px] w-[1px] bg-light-lines mx-[32px]"></div>
       <Header variant="xl" className="flex-1">
-        Platform Launch
+        {board.title}
       </Header>
-      <BoardDialog dialogContent={<CreateTaskDialog />}>
+      <BoardDialog dialogContent={<CreateTaskDialog board={board} />}>
         <Button className="w-[164px]">+ Add New Task</Button>
       </BoardDialog>
       <div className="mx-[24px]">

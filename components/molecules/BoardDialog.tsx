@@ -5,6 +5,7 @@ interface BoardDialogProps {
   dialogContent: React.ReactElement;
   children: React.ReactNode;
 }
+
 const BoardDialog: React.FC<BoardDialogProps> = ({
   dialogContent,
   children,

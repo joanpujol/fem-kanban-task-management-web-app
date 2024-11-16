@@ -26,7 +26,7 @@ const Column: React.FC<ColumnProps> = ({ status, tasks, className }) => {
       />
       <Header
         variant="sm"
-        className="self-center"
+        className="self-center uppercase"
       >{`${status.name} (${tasks.length})`}</Header>
 
       <div className="col-span-2">
