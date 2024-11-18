@@ -1,14 +1,17 @@
 import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 
 interface BoardDialogProps {
   dialogContent: React.ReactElement;
   children: React.ReactNode;
+  className?: string;
 }
 
 const BoardDialog: React.FC<BoardDialogProps> = ({
   dialogContent,
   children,
+  className,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -17,7 +20,10 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
 
   return (
     <>
-      <div onClick={handleOpenDialog} className="cursor-pointer">
+      <div
+        onClick={handleOpenDialog}
+        className={cn('cursor-pointer', className)}
+      >
         {children}
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

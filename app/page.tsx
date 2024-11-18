@@ -1,8 +1,10 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
+import BoardDialog from '@/components/molecules/BoardDialog';
 import BoardTopBar from '@/components/molecules/BoardTopBar';
 import Column from '@/components/molecules/Column';
+import EditBoardDialog from '@/components/organisms/dialogs/EditBoardDialog';
 import useStore from '@/lib/store/useStore';
 import { useState } from 'react';
 
@@ -34,12 +36,17 @@ export default function Home() {
           );
         })}
         <div className="w-[280px] bg-gradient-to-b from-lines to-lines/50 rounded-[6px]">
-          <Header
-            variant="xl"
-            className="text-medium-gray flex justify-center items-center h-full"
+          <BoardDialog
+            className="h-full"
+            dialogContent={<EditBoardDialog board={board} />}
           >
-            + New Column
-          </Header>
+            <Header
+              variant="xl"
+              className="text-medium-gray flex justify-center items-center h-full"
+            >
+              + New Column
+            </Header>
+          </BoardDialog>
         </div>
       </div>
     </main>
