@@ -17,7 +17,8 @@ export default function Home() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const allBoards = useStore((state) => state.boards);
-  const board = allBoards.find((board) => board.id === currentBoardId);
+  const board =
+    allBoards.find((board) => board.id === currentBoardId) ?? allBoards[0];
 
   if (!board) {
     throw new Error('No Board was found with the provided id');

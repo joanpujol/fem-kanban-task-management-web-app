@@ -1,8 +1,13 @@
 import Button from '../atoms/Button';
+import Text from '../atoms/Text';
 import Header from '../atoms/Header';
 import BoardDialog from './BoardDialog';
 import CreateTaskDialog from '../organisms/dialogs/CreateTaskDialog';
 import { Board } from '@/lib/models/Board';
+import { ThreeDots } from '../atoms/svgs/ThreeDots';
+import BoardPopover from '../atoms/BoardPopover';
+import EditBoardDialog from '../organisms/dialogs/EditBoardDialog';
+import DeleteBoardDialog from '../organisms/dialogs/DeleteBoardDialog';
 
 interface BoardTopBarProps {
   board: Board;
@@ -18,17 +23,20 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
         <Button className="w-[164px]">+ Add New Task</Button>
       </BoardDialog>
       <div className="mx-[24px]">
-        <svg
-          width="5"
-          height="20"
-          viewBox="0 0 5 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <BoardPopover
+          popoverContent={
+            <>
+              <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
+                <Text className="text-medium-gray">Edit Board</Text>
+              </BoardDialog>
+              <BoardDialog dialogContent={<DeleteBoardDialog board={board} />}>
+                <Text className="text-red">Delete Board</Text>
+              </BoardDialog>
+            </>
+          }
         >
-          <circle cx="2.30769" cy="2.30769" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="10" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="17.6923" r="2.30769" fill="#828FA3" />
-        </svg>
+          <ThreeDots />
+        </BoardPopover>
       </div>
     </div>
   );

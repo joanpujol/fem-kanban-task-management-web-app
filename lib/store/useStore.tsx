@@ -148,7 +148,7 @@ const useStore = create<AppState>((set) => ({
   deleteBoard: (boardId) =>
     set(
       produce((state) => {
-        state.tasks = state.tasks.filter(
+        state.boards = state.boards.filter(
           (board: Board) => board.id !== boardId
         );
       })
