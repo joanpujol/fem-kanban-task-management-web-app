@@ -7,6 +7,7 @@ interface BoardSideMenuItemProps {
   isHighlighted?: boolean;
   className?: string;
   isCurrent?: boolean;
+  onClick?: () => void;
 }
 
 const BoardSideMenuItem: React.FC<BoardSideMenuItemProps> = ({
@@ -14,10 +15,12 @@ const BoardSideMenuItem: React.FC<BoardSideMenuItemProps> = ({
   className,
   isHighlighted,
   isCurrent,
+  onClick,
 }) => {
   const color = isHighlighted ? 'text-purple' : 'text-medium-gray';
   return (
     <div
+      onClick={onClick}
       className={cn(
         'group flex gap-[12px] items-center h-[48px] hover:bg-purple/10 rounded-r-[24px] cursor-pointer',
         className,

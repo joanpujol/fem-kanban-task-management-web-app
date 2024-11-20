@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 export default function Home() {
-  const [currentBoardId] = useState('123');
+  const [currentBoardId, setCurrentBoardId] = useState('123');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const allBoards = useStore((state) => state.boards);
@@ -33,7 +33,12 @@ export default function Home() {
         'grid-cols-[210px,1fr]': !isSidebarOpen,
       })}
     >
-      <BoardSideMenu isSidebarOpen={isSidebarOpen} allBoards={allBoards} />
+      <BoardSideMenu
+        isSidebarOpen={isSidebarOpen}
+        allBoards={allBoards}
+        currentBoardId={currentBoardId}
+        setCurrentBoardId={setCurrentBoardId}
+      />
       <div>
         <BoardTopBar board={board} />
         <div

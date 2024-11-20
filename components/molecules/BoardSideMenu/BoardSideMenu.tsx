@@ -3,15 +3,22 @@ import Header from '../../atoms/Header';
 import { cn } from '@/lib/utils';
 import { Logo } from '../../atoms/svgs/Logo';
 import BoardSideMenuItem from './components/BoardSideMenuItem';
+import BoardDialog from '../BoardDialog';
+import CreateBoardDialog from '@/components/organisms/dialogs/CreateBoardDialog';
+import { Dispatch, SetStateAction } from 'react';
 
 interface BoardSideMenuProps {
+  currentBoardId: string;
   allBoards: Board[];
   isSidebarOpen: boolean;
+  setCurrentBoardId: Dispatch<SetStateAction<string>>;
 }
 
 const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
+  currentBoardId,
   allBoards,
   isSidebarOpen,
+  setCurrentBoardId,
 }) => {
   return (
     <div className="h-full">
@@ -20,7 +27,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
       </div>
       <div
         className={cn(
-          'flex flex-col min-h-[calc(100vh-96px)] [&>*]:pl-[24px] [&>*]:mr-[24px]',
+          'flex flex-col min-h-[calc(100vh-96px)] [&>*]:mr-[24px]',
           {
             hidden: !isSidebarOpen,
             'bg-white border-r border-light-lines': isSidebarOpen,
@@ -28,11 +35,25 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
         )}
       >
         <Header
-          className="h-[48px] flex items-center"
+          className="h-[48px] flex items-center pl-[24px]"
           variant="sm"
         >{`ALL BOARDS (${allBoards.length})`}</Header>
-        <BoardSideMenuItem title="Platform Launch" isCurrent />
-        <BoardSideMenuItem title="+ Create New Board" isHighlighted />
+        {allBoards.map((board) => (
+          <BoardSideMenuItem
+            onClick={() => setCurrentBoardId(board.id)}
+            key={board.id}
+            title={board.title}
+            className="pl-[24px]"
+            isCurrent={currentBoardId === board.id}
+          />
+        ))}
+        <BoardDialog dialogContent={<CreateBoardDialog />}>
+          <BoardSideMenuItem
+            title="+ Create New Board"
+            className="pl-[24px]"
+            isHighlighted
+          />
+        </BoardDialog>
       </div>
     </div>
   );

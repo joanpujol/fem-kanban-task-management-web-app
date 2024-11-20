@@ -133,7 +133,7 @@ const useStore = create<AppState>((set) => ({
   addBoard: (board) =>
     set(
       produce((state) => {
-        state.tasks.push({ ...board, id: uuidv4() });
+        state.boards.push({ ...board, id: uuidv4() });
       })
     ),
 
