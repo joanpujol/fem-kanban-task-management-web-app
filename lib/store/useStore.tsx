@@ -8,7 +8,7 @@ import { Board } from '../models/Board';
 interface AppState {
   boards: Board[];
   tasks: Task[];
-  addBoard: (board: Omit<Board, 'id'>) => void;
+  addBoard: (board: Board) => void;
   updateBoard: (board: string, updates: Partial<Board>) => void;
   deleteBoard: (board: string) => void;
   addTask: (task: Omit<Task, 'id'>) => void;
@@ -133,7 +133,7 @@ const useStore = create<AppState>((set) => ({
   addBoard: (board) =>
     set(
       produce((state) => {
-        state.boards.push({ ...board, id: uuidv4() });
+        state.boards.push({ ...board });
       })
     ),
 

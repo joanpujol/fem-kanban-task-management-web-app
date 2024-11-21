@@ -47,7 +47,11 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
             isCurrent={currentBoardId === board.id}
           />
         ))}
-        <BoardDialog dialogContent={<CreateBoardDialog />}>
+        <BoardDialog
+          dialogContent={
+            <CreateBoardDialog setCurrentBoardId={setCurrentBoardId} />
+          }
+        >
           <BoardSideMenuItem
             title="+ Create New Board"
             className="pl-[24px]"

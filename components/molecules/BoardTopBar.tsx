@@ -18,7 +18,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
   const isAddTasksButtonEnabled = Boolean(board.statuses.length);
 
   return (
-    <div className="flex items-center bg-white h-[96px] pl-[24px]">
+    <div className="flex items-center bg-white h-[96px] px-[24px]">
       <Header variant="xl" className="flex-1">
         {board.title}
       </Header>
@@ -32,22 +32,26 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
           + Add New Task
         </Button>
       </BoardDialog>
-      <div className="mx-[24px]">
-        <BoardPopover
-          popoverContent={
-            <>
-              <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
-                <Text className="text-medium-gray">Edit Board</Text>
-              </BoardDialog>
-              <BoardDialog dialogContent={<DeleteBoardDialog board={board} />}>
-                <Text className="text-red">Delete Board</Text>
-              </BoardDialog>
-            </>
-          }
-        >
-          <ThreeDots />
-        </BoardPopover>
-      </div>
+      {board.id ? (
+        <div className="ml-[24px]">
+          <BoardPopover
+            popoverContent={
+              <>
+                <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
+                  <Text className="text-medium-gray">Edit Board</Text>
+                </BoardDialog>
+                <BoardDialog
+                  dialogContent={<DeleteBoardDialog board={board} />}
+                >
+                  <Text className="text-red">Delete Board</Text>
+                </BoardDialog>
+              </>
+            }
+          >
+            <ThreeDots />
+          </BoardPopover>
+        </div>
+      ) : undefined}
     </div>
   );
 };

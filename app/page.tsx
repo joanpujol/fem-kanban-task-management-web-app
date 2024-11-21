@@ -8,7 +8,9 @@ import BoardDialog from '@/components/molecules/BoardDialog';
 import BoardSideMenu from '@/components/molecules/BoardSideMenu';
 import BoardTopBar from '@/components/molecules/BoardTopBar';
 import Column from '@/components/molecules/Column';
+import CreateBoardDialog from '@/components/organisms/dialogs/CreateBoardDialog';
 import EditBoardDialog from '@/components/organisms/dialogs/EditBoardDialog';
+import { Board } from '@/lib/models/Board';
 import useStore from '@/lib/store/useStore';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -17,16 +19,21 @@ export default function Home() {
   const [currentBoardId, setCurrentBoardId] = useState('123');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
+  const allTasks = useStore((state) => state.tasks);
   const allBoards = useStore((state) => state.boards);
-  const board =
-    allBoards.find((board) => board.id === currentBoardId) ?? allBoards[0];
 
-  if (!board) {
-    throw new Error('No Board was found with the provided id');
+  let board: Board = {
+    id: '',
+    statuses: [],
+    title: '',
+  };
+
+  if (allBoards.length) {
+    board =
+      allBoards.find((board) => board.id === currentBoardId) ?? allBoards[0];
   }
 
-  const allTasks = useStore((state) => state.tasks);
-  const tasks = allTasks.filter((task) => task.boardId === board.id);
+  const tasks = allTasks.filter((task) => task.boardId === board?.id);
 
   return (
     <main
@@ -79,7 +86,21 @@ export default function Home() {
           >
             <Show className="text-white" />
           </div>
-          {board.statuses.length ? (
+          {!board.id ? (
+            <div className="flex flex-col items-center justify-center w-full">
+              <Header variant="lg" className="text-medium-gray mb-[32px]">
+                There are no boards. Create a new board to get started.
+              </Header>
+              <BoardDialog
+                dialogContent={
+                  <CreateBoardDialog setCurrentBoardId={setCurrentBoardId} />
+                }
+              >
+                <Button size="large">+ Add New Board</Button>
+              </BoardDialog>
+            </div>
+          ) : undefined}
+          {board.id && board.statuses.length ? (
             <>
               {board.statuses.map((status) => {
                 return (
@@ -105,7 +126,8 @@ export default function Home() {
                 </BoardDialog>
               </div>
             </>
-          ) : (
+          ) : undefined}
+          {board.id && !board.statuses.length ? (
             <div className="flex flex-col items-center justify-center w-full">
               <Header variant="lg" className="text-medium-gray mb-[32px]">
                 This board is empty. Create a new column to get started.
@@ -114,7 +136,7 @@ export default function Home() {
                 <Button size="large">+ Add New Column</Button>
               </BoardDialog>
             </div>
-          )}
+          ) : undefined}
         </div>
       </div>
     </main>

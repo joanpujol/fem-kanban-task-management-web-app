@@ -6,7 +6,7 @@ import useStore from '@/lib/store/useStore';
 import TextInput from '@/components/atoms/TextInput';
 import Button from '@/components/atoms/Button';
 import DynamicTextInputList from '../../molecules/DynamicTextInputList';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { generateRandomColors } from '@/lib/generateRandomColors';
 
 const BoardSchema = z.object({
@@ -30,10 +30,12 @@ const BoardSchema = z.object({
 type BoardSchemaType = z.infer<typeof BoardSchema>;
 
 interface CreateBoardDialogProps {
+  setCurrentBoardId: Dispatch<SetStateAction<string>>;
   closeDialog?: () => void;
 }
 
 const CreateBoardDialog: React.FC<CreateBoardDialogProps> = ({
+  setCurrentBoardId,
   closeDialog,
 }) => {
   const addBoard = useStore((state) => state.addBoard);
@@ -70,7 +72,10 @@ const CreateBoardDialog: React.FC<CreateBoardDialogProps> = ({
       return;
     }
 
+    const newBoardId = uuidv4();
+
     addBoard({
+      id: newBoardId,
       title,
       statuses: statuses.map((name) => {
         return {
@@ -80,6 +85,8 @@ const CreateBoardDialog: React.FC<CreateBoardDialogProps> = ({
         };
       }),
     });
+
+    setCurrentBoardId(newBoardId);
 
     if (closeDialog) closeDialog();
   };
