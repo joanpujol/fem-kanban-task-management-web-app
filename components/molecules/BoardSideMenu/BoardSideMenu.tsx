@@ -28,10 +28,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
       <div
         className={cn(
           'flex flex-col min-h-[calc(100vh-96px)] [&>*]:mr-[24px]',
-          {
-            hidden: !isSidebarOpen,
-            'bg-white border-r border-light-lines': isSidebarOpen,
-          }
+          isSidebarOpen ? 'bg-white border-r border-light-lines' : 'hidden'
         )}
       >
         <Header

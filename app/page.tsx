@@ -4,6 +4,7 @@ import Button from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { Hide } from '@/components/atoms/svgs/Hide';
 import { Show } from '@/components/atoms/svgs/Show';
+import ThemeToggle from '@/components/atoms/ThemeToggle';
 import BoardDialog from '@/components/molecules/BoardDialog';
 import BoardSideMenu from '@/components/molecules/BoardSideMenu';
 import BoardTopBar from '@/components/molecules/BoardTopBar';
@@ -18,6 +19,7 @@ import { useState } from 'react';
 export default function Home() {
   const [currentBoardId, setCurrentBoardId] = useState('123');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isDarkThemeActive, setIsDarkThemeActive] = useState(false);
 
   const allTasks = useStore((state) => state.tasks);
   const allBoards = useStore((state) => state.boards);
@@ -37,10 +39,10 @@ export default function Home() {
 
   return (
     <main
-      className={cn('min-h-screen grid', {
-        'grid-cols-[300px,1fr]': isSidebarOpen,
-        'grid-cols-[210px,1fr]': !isSidebarOpen,
-      })}
+      className={cn(
+        'min-h-screen grid',
+        isSidebarOpen ? 'grid-cols-[300px,1fr]' : 'grid-cols-[210px,1fr]'
+      )}
     >
       <BoardSideMenu
         isSidebarOpen={isSidebarOpen}
@@ -58,6 +60,13 @@ export default function Home() {
             }
           )}
         >
+          <ThemeToggle
+            className={cn('absolute bottom-0 left-0 mb-[88px]', {
+              hidden: !isSidebarOpen,
+            })}
+            isDarkThemeActive={isDarkThemeActive}
+            setIsDarkThemeActive={setIsDarkThemeActive}
+          />
           <div
             onClick={() => setSidebarOpen(false)}
             className={cn(
