@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { Hide } from '@/components/atoms/svgs/Hide';
 import { Show } from '@/components/atoms/svgs/Show';
@@ -78,30 +79,42 @@ export default function Home() {
           >
             <Show className="text-white" />
           </div>
-
-          {board.statuses.map((status) => {
-            return (
-              <Column
-                key={status.id}
-                status={status}
-                tasks={tasks.filter((task) => task.statusId === status.id)}
-                className="self-start w-[280px]"
-              />
-            );
-          })}
-          <div className="w-[280px] bg-gradient-to-b from-lines to-lines/50 rounded-[6px]">
-            <BoardDialog
-              className="h-full"
-              dialogContent={<EditBoardDialog board={board} />}
-            >
-              <Header
-                variant="xl"
-                className="text-medium-gray flex justify-center items-center h-full"
-              >
-                + New Column
+          {board.statuses.length ? (
+            <>
+              {board.statuses.map((status) => {
+                return (
+                  <Column
+                    key={status.id}
+                    status={status}
+                    tasks={tasks.filter((task) => task.statusId === status.id)}
+                    className="self-start w-[280px]"
+                  />
+                );
+              })}
+              <div className="w-[280px] bg-gradient-to-b from-lines to-lines/50 rounded-[6px]">
+                <BoardDialog
+                  className="h-full"
+                  dialogContent={<EditBoardDialog board={board} />}
+                >
+                  <Header
+                    variant="xl"
+                    className="text-medium-gray flex justify-center items-center h-full"
+                  >
+                    + New Column
+                  </Header>
+                </BoardDialog>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center w-full">
+              <Header variant="lg" className="text-medium-gray mb-[32px]">
+                This board is empty. Create a new column to get started.
               </Header>
-            </BoardDialog>
-          </div>
+              <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
+                <Button size="large">+ Add New Column</Button>
+              </BoardDialog>
+            </div>
+          )}
         </div>
       </div>
     </main>
