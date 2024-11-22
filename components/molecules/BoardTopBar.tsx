@@ -18,7 +18,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
   const isAddTasksButtonEnabled = Boolean(board.statuses.length);
 
   return (
-    <div className="flex items-center bg-white h-[96px] px-[24px]">
+    <div className="flex items-center bg-background-soft h-[96px] px-[24px]">
       <Header variant="xl" className="flex-1">
         {board.title}
       </Header>

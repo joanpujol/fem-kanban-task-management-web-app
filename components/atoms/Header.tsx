@@ -6,9 +6,9 @@ const header = tv({
   base: 'font-bold font-sans',
   variants: {
     variant: {
-      xl: 'text-xl leading-xl',
-      lg: 'text-lg leading-lg',
-      md: 'text-md leading-md',
+      xl: 'text-xl leading-xl text-contrast-pure',
+      lg: 'text-lg leading-lg text-contrast-pure',
+      md: 'text-md leading-md text-contrast-pure',
       sm: 'text-xs leading-sm tracking-widest text-medium-gray',
     },
   },

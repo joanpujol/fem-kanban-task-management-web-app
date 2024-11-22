@@ -10,15 +10,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        black: 'rgba(var(--black), 1)',
-        'medium-gray': 'rgba(var(--medium-gray), 1)',
-        'light-gray': 'var(--light-gray)',
-        purple: 'rgba(var(--purple), 1)',
-        'purple-hover': 'var(--purple-hover)',
+        main: 'rgba(var(--main), 1)',
         red: 'var(--red)',
         'red-hover': 'var(--red-hover)',
-        'light-lines': 'var(--light-lines)',
-        lines: 'rgba(var(--lines), 1)',
+        'hover-primary': 'var(--hover-primary)',
+        'hover-secondary': 'rgba(var(--hover-secondary))',
+        'medium-gray': 'rgba(var(--medium-gray), 1)',
+        'new-column-color': 'rgba(var(--new-column-color), 1)',
+        'background-soft': 'var(--background-soft)',
+        'background-pure': 'var(--background-pure)',
+        'background-secondary': 'var(--background-secondary)',
+        'contrast-pure': 'rgba(var(--contrast-pure), 1)',
+        'secondary-button-color': 'rgba(var(--secondary-button-color))',
+        'secondary-button-hover': 'rgba(var(--secondary-button-hover))',
+        'border-primary': 'var(--border-primary)',
+        subheader: 'var(--subheader)',
       },
       fontFamily: {
         sans: ['var(--font-plus-jakarta-sans)'],

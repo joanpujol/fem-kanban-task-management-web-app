@@ -22,13 +22,15 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
 }) => {
   return (
     <div className="h-full">
-      <div className="pl-[32px] h-[96px] flex items-center bg-white border-r border-light-lines">
-        <Logo />
+      <div className="pl-[32px] h-[96px] flex items-center bg-background-soft border-r border-border-primary">
+        <Logo className="text-contrast-pure" />
       </div>
       <div
         className={cn(
           'flex flex-col min-h-[calc(100vh-96px)] [&>*]:mr-[24px]',
-          isSidebarOpen ? 'bg-white border-r border-light-lines' : 'hidden'
+          isSidebarOpen
+            ? 'bg-background-soft border-r border-border-primary'
+            : 'hidden'
         )}
       >
         <Header

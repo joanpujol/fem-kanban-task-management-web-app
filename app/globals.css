@@ -2,20 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --purple: 99, 95, 199;
-  --purple-hover: #a8a4ff;
-  --black: 0, 1, 18;
-  --very-dark-gray: #20212c;
-  --dark-gray: #2b2c37;
-  --dark-lines: #3e3f4e;
-  --medium-gray: 130, 143, 163;
-  --lines: 233, 239, 250;
-  --light-lines: #e4ebfa;
-  --light-gray: #f4f7fd;
-  --white: #ffffff;
-  --red: #ea5555;
-  --red-hover: #ff9898;
+@layer base {
+  :root {
+    --main: 99, 95, 199;
+    --red: #ea5555;
+    --red-hover: #ff9898;
+    --medium-gray: 130, 143, 163;
+    --hover-primary: #a8a4ff;
+    --hover-secondary: 99, 95, 199, 0.1;
+    --new-column-color: 233, 239, 250;
+    --background-soft: #ffffff;
+    --background-pure: #f4f7fd;
+    --background-secondary: #ffffff;
+    --contrast-pure: 0, 1, 18;
+    --secondary-button-color: 99, 95, 199, 0.1;
+    --secondary-button-hover: 99, 95, 199, 0.25;
+    --border-primary: #e4ebfa;
+    --subheader: #828fa3;
+  }
+}
+
+.dark {
+  --hover-secondary: 255, 255, 255, 1;
+  --new-column-color: 43, 44, 55;
+  --background-soft: #2b2c37;
+  --background-pure: #20212c;
+  --background-secondary: #20212c;
+  --contrast-pure: 255, 255, 255;
+  --secondary-button-color: 255, 255, 255, 1;
+  --secondary-button-hover: 255, 255, 255, 1;
+  --border-primary: #3e3f4e;
+  --subheader: #ffffff;
 }
 
 body {

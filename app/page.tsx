@@ -19,8 +19,11 @@ import { useState } from 'react';
 export default function Home() {
   const [currentBoardId, setCurrentBoardId] = useState('123');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isDarkThemeActive, setIsDarkThemeActive] = useState(false);
 
+  const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
+  const toggleIsDarkThemeActive = useStore(
+    (state) => state.toggleIsDarkThemeActive
+  );
   const allTasks = useStore((state) => state.tasks);
   const allBoards = useStore((state) => state.boards);
 
@@ -41,7 +44,8 @@ export default function Home() {
     <main
       className={cn(
         'min-h-screen grid',
-        isSidebarOpen ? 'grid-cols-[300px,1fr]' : 'grid-cols-[210px,1fr]'
+        isSidebarOpen ? 'grid-cols-[300px,1fr]' : 'grid-cols-[210px,1fr]',
+        isDarkThemeActive ? 'dark' : 'light'
       )}
     >
       <BoardSideMenu
@@ -54,7 +58,7 @@ export default function Home() {
         <BoardTopBar board={board} />
         <div
           className={cn(
-            'flex flex-row gap-[24px] p-[24px] min-h-[calc(100vh-96px)] border-t border-light-lines bg-light-gray',
+            'flex flex-row gap-[24px] p-[24px] min-h-[calc(100vh-96px)] border-t border-border-primary bg-background-pure',
             {
               'ml-[-210px]': !isSidebarOpen,
             }
@@ -65,21 +69,21 @@ export default function Home() {
               hidden: !isSidebarOpen,
             })}
             isDarkThemeActive={isDarkThemeActive}
-            setIsDarkThemeActive={setIsDarkThemeActive}
+            toggleIsDarkThemeActive={toggleIsDarkThemeActive}
           />
           <div
             onClick={() => setSidebarOpen(false)}
             className={cn(
-              'absolute bottom-0 left-0 z-1 w-[calc(300px-24px)] group flex gap-[12px] items-center mb-[32px] pl-[24px] h-[48px] hover:bg-purple/10 rounded-r-[24px] cursor-pointer',
+              'absolute bottom-0 left-0 z-1 w-[calc(300px-24px)] group flex gap-[12px] items-center mb-[32px] pl-[24px] h-[48px] hover:bg-hover-secondary rounded-r-[24px] cursor-pointer',
               {
                 hidden: !isSidebarOpen,
               }
             )}
           >
-            <Hide className="text-medium-gray group-hover:text-purple" />
+            <Hide className="text-medium-gray group-hover:text-main" />
             <Header
               variant="md"
-              className="text-medium-gray group-hover:text-purple"
+              className="text-medium-gray group-hover:text-main"
             >
               Hide Sidebar
             </Header>
@@ -87,7 +91,7 @@ export default function Home() {
           <div
             onClick={() => setSidebarOpen(true)}
             className={cn(
-              'absolute bottom-0 left-0 z-1 w-[56px] h-[48px] mb-[32px] flex items-center justify-center rounded-r-[24px] bg-purple hover:bg-purple-hover cursor-pointer',
+              'absolute bottom-0 left-0 z-1 w-[56px] h-[48px] mb-[32px] flex items-center justify-center rounded-r-[24px] bg-main hover:bg-hover-primary cursor-pointer',
               {
                 hidden: isSidebarOpen,
               }
@@ -121,14 +125,14 @@ export default function Home() {
                   />
                 );
               })}
-              <div className="w-[280px] bg-gradient-to-b from-lines to-lines/50 rounded-[6px]">
+              <div className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px]">
                 <BoardDialog
                   className="h-full"
                   dialogContent={<EditBoardDialog board={board} />}
                 >
                   <Header
                     variant="xl"
-                    className="text-medium-gray flex justify-center items-center h-full"
+                    className="text-medium-gray flex justify-center items-center h-full group-hover:text-main"
                   >
                     + New Column
                   </Header>

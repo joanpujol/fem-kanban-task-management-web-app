@@ -24,14 +24,14 @@ const CheckboxWithText = ({
     <div
       onClick={onCheckboxChange}
       className={cn(
-        'flex space-x-[16px] bg-light-gray hover:bg-purple/25 p-[12px] rounded-[4px] max-w-[350px] cursor-pointer',
+        'flex space-x-[16px] bg-background-pure hover:bg-main/25 p-[12px] rounded-[4px] max-w-[350px] cursor-pointer',
         className
       )}
     >
       <Checkbox
         id={id}
         checked={isCompleted}
-        className="w-[16px] h-[16px] border-medium-gray/24 data-[state=checked]:border-purple data-[state=checked]:bg-purple bg-white rounded-[2px]"
+        className="w-[16px] h-[16px] border border-medium-gray/25 data-[state=checked]:border-main data-[state=checked]:bg-main bg-background-soft rounded-[2px]"
       />
       <label
         htmlFor={id}

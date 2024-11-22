@@ -5,9 +5,10 @@ const text = tv({
   base: 'font-sans',
   variants: {
     variant: {
-      regular: 'font-medium text-sm leading-lg',
-      bold: 'font-bold text-xs leading-sm',
-      strikethrough: 'font-bold text-xs leading-sm line-through text-black/50',
+      regular: 'font-medium text-sm leading-lg text-contrast-pure',
+      bold: 'font-bold text-xs leading-sm text-contrast-pure',
+      strikethrough:
+        'font-bold text-xs leading-sm line-through text-contrast-pure/50',
     },
   },
   defaultVariants: {

@@ -17,7 +17,7 @@ const CurrentStatus: React.FC<CurrentStatusProps> = ({
 }) => {
   return (
     <div>
-      <Text variant="bold" className="text-medium-gray mb-[8px]">
+      <Text variant="bold" className="text-subheader mb-[8px]">
         {title}
       </Text>
       <Dropdown

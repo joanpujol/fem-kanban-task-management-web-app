@@ -17,15 +17,15 @@ const BoardSideMenuItem: React.FC<BoardSideMenuItemProps> = ({
   isCurrent,
   onClick,
 }) => {
-  const color = isHighlighted ? 'text-purple' : 'text-medium-gray';
+  const color = isHighlighted ? 'text-main' : 'text-medium-gray';
   return (
     <div
       onClick={onClick}
       className={cn(
-        'group flex gap-[12px] items-center h-[48px] hover:bg-purple/10 rounded-r-[24px] cursor-pointer',
+        'group flex gap-[12px] items-center h-[48px] hover:bg-hover-secondary rounded-r-[24px] cursor-pointer',
         className,
         {
-          'bg-purple': isCurrent,
+          'bg-main': isCurrent,
         }
       )}
     >
@@ -35,7 +35,7 @@ const BoardSideMenuItem: React.FC<BoardSideMenuItemProps> = ({
           {
             'text-white': isCurrent,
           },
-          'group-hover:text-purple'
+          'group-hover:text-main'
         )}
       />
       <Header
@@ -45,7 +45,7 @@ const BoardSideMenuItem: React.FC<BoardSideMenuItemProps> = ({
           {
             'text-white': isCurrent,
           },
-          'group-hover:text-purple'
+          'group-hover:text-main'
         )}
       >
         {title}

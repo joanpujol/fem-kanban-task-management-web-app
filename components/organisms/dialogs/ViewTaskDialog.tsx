@@ -78,7 +78,7 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
       </Text>
 
       <div>
-        <Text variant="bold" className="text-medium-gray mb-[16px]">
+        <Text variant="bold" className="text-subheader mb-[16px]">
           Subtasks &#40;{completedTasks} of {totalTasks}&#41;
         </Text>
         <div className="[&>*:not(:last-child)]:mb-[8px]">

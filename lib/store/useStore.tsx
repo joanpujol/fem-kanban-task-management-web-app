@@ -6,8 +6,10 @@ import { Subtask } from '../models/Subtask';
 import { Board } from '../models/Board';
 
 interface AppState {
+  isDarkThemeActive: boolean;
   boards: Board[];
   tasks: Task[];
+  toggleIsDarkThemeActive: () => void;
   addBoard: (board: Board) => void;
   updateBoard: (board: string, updates: Partial<Board>) => void;
   deleteBoard: (board: string) => void;
@@ -22,6 +24,7 @@ interface AppState {
 }
 
 const useStore = create<AppState>((set) => ({
+  isDarkThemeActive: false,
   boards: [
     {
       id: '123',
@@ -129,6 +132,13 @@ const useStore = create<AppState>((set) => ({
       ],
     },
   ],
+
+  toggleIsDarkThemeActive: () =>
+    set(
+      produce((state) => {
+        state.isDarkThemeActive = !state.isDarkThemeActive;
+      })
+    ),
 
   addBoard: (board) =>
     set(

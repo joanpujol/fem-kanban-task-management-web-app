@@ -1,30 +1,29 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Sun } from './svgs/Sun';
 import { Moon } from './svgs/Moon';
 import { cn } from '@/lib/utils';
 
 interface ThemeToggleProps {
   isDarkThemeActive: boolean;
-  setIsDarkThemeActive: Dispatch<SetStateAction<boolean>>;
+  toggleIsDarkThemeActive: () => void;
   className?: string;
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({
   isDarkThemeActive,
-  setIsDarkThemeActive,
+  toggleIsDarkThemeActive,
   className,
 }) => {
   return (
     <div
       className={cn(
-        'flex justify-center gap-[24px] items-center h-[48px] w-[calc(300px-48px)] ml-[24px] bg-light-gray rounded-[6px]',
+        'flex justify-center gap-[24px] items-center h-[48px] w-[calc(300px-48px)] ml-[24px] bg-background-pure rounded-[6px]',
         className
       )}
     >
       <Sun className="text-medium-gray" />
       <div
-        className="w-[40px] h-[20px] bg-purple rounded-[10px] cursor-pointer hover:bg-purple-hover"
-        onClick={() => setIsDarkThemeActive(!isDarkThemeActive)}
+        className="w-[40px] h-[20px] bg-main rounded-[10px] cursor-pointer hover:bg-hover-primary"
+        onClick={() => toggleIsDarkThemeActive()}
       >
         <div
           className={cn(

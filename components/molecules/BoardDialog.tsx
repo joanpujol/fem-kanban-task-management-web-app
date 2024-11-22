@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import useStore from '@/lib/store/useStore';
 
 interface BoardDialogProps {
   dialogContent: React.ReactElement;
@@ -15,6 +16,8 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
+
   const handleOpenDialog = () => setIsOpen(true);
   const handleCloseDialog = () => setIsOpen(false);
 
@@ -27,7 +30,14 @@ const BoardDialog: React.FC<BoardDialogProps> = ({
         {children}
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="rounded-[6px] max-w-[480px] focus:outline-none p-[32px]">
+        <DialogContent
+          className={cn(
+            'rounded-[6px] max-w-[480px] focus:outline-none p-[32px] bg-background-soft',
+            {
+              dark: isDarkThemeActive,
+            }
+          )}
+        >
           {React.cloneElement(dialogContent, {
             closeDialog: handleCloseDialog,
           })}

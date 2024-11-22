@@ -17,7 +17,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       <div className={cn('relative max-w-[350px]', className)}>
         <Input
           className={cn(
-            'border-medium-gray/25 px-[16px] rounded-[4px] placeholder:text-black/25 font-medium text-sm leading-lg',
+            'border-medium-gray/25 px-[16px] hover:border-main focus:border-main bg-background-soft text-contrast-pure rounded-[4px] placeholder:text-contrast-pure/25 font-medium text-sm leading-lg',
             error && 'border-red'
           )}
           ref={ref}

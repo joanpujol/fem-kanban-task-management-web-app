@@ -18,7 +18,7 @@ const BoardTextArea = React.forwardRef<HTMLTextAreaElement, BoardTextAreaProps>(
       <div className={cn('relative max-w-[350px]', className)}>
         <Textarea
           className={cn(
-            'min-h-[112px] border-medium-gray/25 px-[16px] rounded-[4px] placeholder:text-black/25 font-medium text-sm leading-lg',
+            'min-h-[112px] border-medium-gray/25 px-[16px] hover:border-main focus:border-main bg-background-soft text-contrast-pure rounded-[4px] placeholder:text-contrast-pure/25 font-medium text-sm leading-lg',
             error && 'border-red'
           )}
           ref={ref}
