@@ -17,14 +17,6 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 export default function Home() {
-  const [currentBoardId, setCurrentBoardId] = useState('123');
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-
-  const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
-  const toggleIsDarkThemeActive = useStore(
-    (state) => state.toggleIsDarkThemeActive
-  );
-  const allTasks = useStore((state) => state.tasks) ?? [];
   const allBoards = useStore((state) => state.boards) ?? [
     {
       id: '',
@@ -32,8 +24,16 @@ export default function Home() {
       title: '',
     },
   ];
+  const allTasks = useStore((state) => state.tasks) ?? [];
+  const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
+  const toggleIsDarkThemeActive = useStore(
+    (state) => state.toggleIsDarkThemeActive
+  );
 
   let board: Board = allBoards[0];
+
+  const [currentBoardId, setCurrentBoardId] = useState(board.id);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   if (allBoards.length) {
     board = allBoards.find((board) => board.id === currentBoardId) ?? board;

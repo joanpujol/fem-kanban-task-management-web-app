@@ -21,6 +21,7 @@ const Column: React.FC<ColumnProps> = ({ status, tasks, className }) => {
       )}
     >
       <div
+        suppressHydrationWarning
         style={{ backgroundColor: status.color ? status.color : undefined }}
         className={cn('w-[15px] h-[15px] rounded-full self-center')}
       />
