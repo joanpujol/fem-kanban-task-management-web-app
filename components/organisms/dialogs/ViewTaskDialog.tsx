@@ -59,10 +59,14 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({ task }) => {
         <BoardPopover
           popoverContent={
             <>
-              <BoardDialog dialogContent={<EditTaskDialog task={task} />}>
+              <BoardDialog
+                dialogTitle="Edit Task Dialog"
+                dialogContent={<EditTaskDialog task={task} />}
+              >
                 <Text className="text-medium-gray">Edit Task</Text>
               </BoardDialog>
               <BoardDialog
+                dialogTitle="Delete Task Dialog"
                 dialogContent={<DeleteTaskDialog taskId={task.id} />}
               >
                 <Text className="text-red">Delete Task</Text>

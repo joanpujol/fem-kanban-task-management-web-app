@@ -47,6 +47,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
           />
         ))}
         <BoardDialog
+          dialogTitle="Create Board Dialog"
           dialogContent={
             <CreateBoardDialog setCurrentBoardId={setCurrentBoardId} />
           }

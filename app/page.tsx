@@ -24,18 +24,19 @@ export default function Home() {
   const toggleIsDarkThemeActive = useStore(
     (state) => state.toggleIsDarkThemeActive
   );
-  const allTasks = useStore((state) => state.tasks);
-  const allBoards = useStore((state) => state.boards);
+  const allTasks = useStore((state) => state.tasks) ?? [];
+  const allBoards = useStore((state) => state.boards) ?? [
+    {
+      id: '',
+      statuses: [],
+      title: '',
+    },
+  ];
 
-  let board: Board = {
-    id: '',
-    statuses: [],
-    title: '',
-  };
+  let board: Board = allBoards[0];
 
   if (allBoards.length) {
-    board =
-      allBoards.find((board) => board.id === currentBoardId) ?? allBoards[0];
+    board = allBoards.find((board) => board.id === currentBoardId) ?? board;
   }
 
   const tasks = allTasks.filter((task) => task.boardId === board?.id);
@@ -105,6 +106,7 @@ export default function Home() {
                 There are no boards. Create a new board to get started.
               </Header>
               <BoardDialog
+                dialogTitle="Create Board Dialog"
                 dialogContent={
                   <CreateBoardDialog setCurrentBoardId={setCurrentBoardId} />
                 }
@@ -127,6 +129,7 @@ export default function Home() {
               })}
               <div className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px]">
                 <BoardDialog
+                  dialogTitle="Edit Board Dialog"
                   className="h-full"
                   dialogContent={<EditBoardDialog board={board} />}
                 >
@@ -145,7 +148,10 @@ export default function Home() {
               <Header variant="lg" className="text-medium-gray mb-[32px]">
                 This board is empty. Create a new column to get started.
               </Header>
-              <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
+              <BoardDialog
+                dialogTitle="Edit Board Dialog"
+                dialogContent={<EditBoardDialog board={board} />}
+              >
                 <Button size="large">+ Add New Column</Button>
               </BoardDialog>
             </div>

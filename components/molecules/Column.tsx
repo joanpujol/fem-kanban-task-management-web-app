@@ -32,7 +32,10 @@ const Column: React.FC<ColumnProps> = ({ status, tasks, className }) => {
       <div className="col-span-2">
         {tasks.map((task: Task) => (
           <div key={task.id} className="mb-[20px] last:mb-0">
-            <BoardDialog dialogContent={<ViewTaskDialog task={task} />}>
+            <BoardDialog
+              dialogTitle="View Task Dialog"
+              dialogContent={<ViewTaskDialog task={task} />}
+            >
               <Card task={task} />
             </BoardDialog>
           </div>

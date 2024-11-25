@@ -22,7 +22,10 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
       <Header variant="xl" className="flex-1">
         {board.title}
       </Header>
-      <BoardDialog dialogContent={<CreateTaskDialog board={board} />}>
+      <BoardDialog
+        dialogTitle="Create Task Dialog"
+        dialogContent={<CreateTaskDialog board={board} />}
+      >
         <Button
           className={cn('w-[164px]', {
             'opacity-25': !isAddTasksButtonEnabled,
@@ -37,10 +40,14 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({ board }) => {
           <BoardPopover
             popoverContent={
               <>
-                <BoardDialog dialogContent={<EditBoardDialog board={board} />}>
+                <BoardDialog
+                  dialogTitle="Edit Board Dialog"
+                  dialogContent={<EditBoardDialog board={board} />}
+                >
                   <Text className="text-medium-gray">Edit Board</Text>
                 </BoardDialog>
                 <BoardDialog
+                  dialogTitle="Delete Board Dialog"
                   dialogContent={<DeleteBoardDialog board={board} />}
                 >
                   <Text className="text-red">Delete Board</Text>
