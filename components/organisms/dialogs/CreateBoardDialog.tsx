@@ -12,18 +12,15 @@ import { generateRandomColors } from '@/lib/generateRandomColors';
 const BoardSchema = z.object({
   title: z.string().min(1, "Can't be empty"),
   statuses: z.array(z.string()).superRefine((statuses, ctx) => {
-    const allEmpty = statuses.every((status) => status.trim() === '');
-    if (!allEmpty) {
-      statuses.forEach((status, index) => {
-        if (status.trim() === '') {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Can't be empty",
-            path: [index],
-          });
-        }
-      });
-    }
+    statuses.forEach((status, index) => {
+      if (status.trim() === '') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Can't be empty",
+          path: [index],
+        });
+      }
+    });
   }),
 });
 

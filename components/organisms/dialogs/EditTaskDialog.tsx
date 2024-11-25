@@ -15,18 +15,15 @@ import { useState } from 'react';
 const TaskSchema = z.object({
   title: z.string().min(1, "Can't be empty"),
   subtasks: z.array(z.string()).superRefine((subtasks, ctx) => {
-    const allEmpty = subtasks.every((subtask) => subtask.trim() === '');
-    if (!allEmpty) {
-      subtasks.forEach((subtask, index) => {
-        if (subtask.trim() === '') {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Can't be empty",
-            path: [index],
-          });
-        }
-      });
-    }
+    subtasks.forEach((subtask, index) => {
+      if (subtask.trim() === '') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Can't be empty",
+          path: [index],
+        });
+      }
+    });
   }),
 });
 
