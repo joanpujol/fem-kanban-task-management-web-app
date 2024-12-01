@@ -56,7 +56,12 @@ const ViewTaskDialog: React.FC<ViewTaskDialogProps> = ({
   };
 
   const onCurrentStatusChange = (value: string) => {
-    updateTask(task.id, { statusId: value });
+    const updatedTask: Task = {
+      ...task,
+      statusId: value,
+    };
+    updateTask(task.id, updatedTask);
+    setCurrentTask(updatedTask);
   };
 
   return (

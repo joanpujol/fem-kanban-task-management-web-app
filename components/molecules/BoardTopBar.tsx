@@ -95,7 +95,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({
             </>
           }
         >
-          <ThreeDots className="ml-[16px]" />
+          <ThreeDots className="ml-[16px] md:ml-[24px]" />
         </BoardPopover>
       ) : undefined}
       {mobileBoardMenu}
