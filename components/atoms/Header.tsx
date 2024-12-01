@@ -13,7 +13,7 @@ const header = tv({
     },
   },
   defaultVariants: {
-    variant: 'xl',
+    variant: 'lg',
   },
 });
 
@@ -31,7 +31,11 @@ const Header = ({
   ...props
 }: HeaderProps): JSX.Element => {
   return (
-    <h1 className={cn(header({ variant }), className)} {...props}>
+    <h1
+      className={cn(header({ variant }), className)}
+      {...props}
+      suppressHydrationWarning
+    >
       {children}
     </h1>
   );

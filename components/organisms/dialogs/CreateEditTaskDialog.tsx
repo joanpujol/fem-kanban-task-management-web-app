@@ -4,10 +4,12 @@ import Header from '@/components/atoms/Header';
 import Text from '@/components/atoms/Text';
 import CurrentStatus from '../../molecules/CurrentStatus';
 import useStore from '@/lib/store/useStore';
+import { Task } from '@/lib/models/Task';
 import TextInput from '@/components/atoms/TextInput';
 import BoardTextArea from '@/components/atoms/BoardTextArea';
 import Button from '@/components/atoms/Button';
 import DynamicTextInputList from '../../molecules/DynamicTextInputList';
+import { Subtask } from '@/lib/models/Subtask';
 import { useState } from 'react';
 import { Board } from '@/lib/models/Board';
 
@@ -28,28 +30,37 @@ const TaskSchema = z.object({
 
 type TaskSchemaType = z.infer<typeof TaskSchema>;
 
-interface CreateTaskDialogProps {
+interface CreateEditTaskDialogProps {
+  task: Task;
   board: Board;
+  dialogType: 'create' | 'edit';
   closeDialog?: () => void;
 }
 
-const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({
+const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
+  task,
   board,
+  dialogType,
   closeDialog,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [subtasks, setSubtasks] = useState(['', '']);
+  const [title, setTitle] = useState(dialogType === 'create' ? '' : task.title);
+  const [description, setDescription] = useState(
+    dialogType === 'create' ? '' : task.description
+  );
+  const [subtasks, setSubtasks] = useState(
+    dialogType === 'create'
+      ? ['', '']
+      : task.subtasks.map((subtask) => subtask.title)
+  );
+  const statuses = board.statuses;
+  const [statusId, setStatusId] = useState(
+    dialogType === 'create' ? statuses[0].id : task.statusId
+  );
   const [errors, setErrors] = useState<Partial<TaskSchemaType>>({});
 
   const addTask = useStore((state) => state.addTask);
-  const statuses = board.statuses;
+  const updateTask = useStore((state) => state.updateTask);
 
-  if (!statuses.length) {
-    throw new Error('A minimum of one column is required');
-  }
-
-  const [statusId, setStatusId] = useState(statuses[0].id);
   const currentStatus = statuses.find((status) => status.id === statusId);
 
   if (!currentStatus) {
@@ -84,25 +95,42 @@ const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({
       return;
     }
 
-    addTask({
-      title,
-      description,
-      statusId,
-      boardId: board.id,
-      subtasks: subtasks.map((title) => ({
-        id: uuidv4(),
+    if (dialogType === 'create') {
+      addTask({
         title,
-        isCompleted: false,
-      })),
-    });
+        description,
+        statusId,
+        boardId: board.id,
+        subtasks: subtasks.map((title) => ({
+          id: uuidv4(),
+          title,
+          isCompleted: false,
+        })),
+      });
+    } else {
+      updateTask(task.id, {
+        title,
+        description,
+        subtasks: subtasks.map((title) => ({
+          id: uuidv4(),
+          title,
+          isCompleted:
+            task.subtasks?.find((subtask) => subtask.title === title)
+              ?.isCompleted || false,
+        })),
+        statusId,
+      });
+    }
 
-    if (closeDialog) closeDialog();
+    if (closeDialog) {
+      closeDialog();
+    }
   };
 
   return (
     <div className="grid grid-cols-1 gap-[24px]">
       <Header variant="lg" className="flex-1">
-        Add New Task
+        {dialogType === 'create' ? 'Add New Task' : 'Edit Task'}
       </Header>
       <div>
         <Text variant="bold" className="text-medium-gray mb-[8px]">
@@ -136,11 +164,19 @@ recharge the batteries a little."
         </Text>
         <DynamicTextInputList
           actionButtonText="+ Add New Subtask"
-          initialValues={[
-            ...subtasks.map((subtask: string) => {
-              return subtask;
-            }),
-          ]}
+          initialValues={
+            dialogType === 'create'
+              ? [
+                  ...subtasks.map((subtask: string) => {
+                    return subtask;
+                  }),
+                ]
+              : [
+                  ...task.subtasks.map((subtask: Subtask) => {
+                    return subtask.title;
+                  }),
+                ]
+          }
           onInputsChange={(values: string[]) => {
             setSubtasks(values);
           }}
@@ -160,10 +196,10 @@ recharge the batteries a little."
         className="w-full"
         onClick={onSaveChangesButtonClicked}
       >
-        Create Task
+        {dialogType === 'create' ? 'Create Task' : 'Save Changes'}
       </Button>
     </div>
   );
 };
 
-export default CreateTaskDialog;
+export default CreateEditTaskDialog;

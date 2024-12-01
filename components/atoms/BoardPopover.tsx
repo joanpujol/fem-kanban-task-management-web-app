@@ -22,7 +22,7 @@ const BoardPopover: React.FC<BoardPopoverProps> = ({
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent
         className={cn(
-          'p-[16px] w-[160px] flex flex-col gap-[16px] rounded-[8px] shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] bg-background-secondary',
+          'p-[16px] w-[160px] flex flex-col gap-[16px] rounded-[8px] shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] bg-background-secondary cursor-pointer',
           {
             dark: isDarkThemeActive,
           }

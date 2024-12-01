@@ -6,10 +6,9 @@ import useStore from '@/lib/store/useStore';
 import TextInput from '@/components/atoms/TextInput';
 import Button from '@/components/atoms/Button';
 import DynamicTextInputList from '../../molecules/DynamicTextInputList';
-import { useState } from 'react';
-import { Board } from '@/lib/models/Board';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { generateRandomColors } from '@/lib/generateRandomColors';
-import { Status } from '@/lib/models/Status';
+import { Board } from '@/lib/models/Board';
 
 const BoardSchema = z.object({
   title: z.string().min(1, "Can't be empty"),
@@ -28,20 +27,29 @@ const BoardSchema = z.object({
 
 type BoardSchemaType = z.infer<typeof BoardSchema>;
 
-interface EditBoardDialogProps {
+interface CreateEditBoardDialogProps {
   board: Board;
+  setCurrentBoardId: Dispatch<SetStateAction<string>>;
   closeDialog?: () => void;
+  dialogType: 'create' | 'edit';
 }
 
-const EditBoardDialog: React.FC<EditBoardDialogProps> = ({
+const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
   board,
+  setCurrentBoardId,
   closeDialog,
+  dialogType,
 }) => {
+  const addBoard = useStore((state) => state.addBoard);
   const updateBoard = useStore((state) => state.updateBoard);
 
-  const [title, setTitle] = useState(board.title);
+  const [title, setTitle] = useState(
+    dialogType === 'create' ? '' : board.title
+  );
   const [statuses, setStatuses] = useState(
-    board.statuses.map((status) => status.name)
+    dialogType === 'create'
+      ? ['Todo', 'Doing']
+      : board.statuses.map((status) => status.name)
   );
   const [errors, setErrors] = useState<Partial<BoardSchemaType>>({});
 
@@ -73,20 +81,38 @@ const EditBoardDialog: React.FC<EditBoardDialogProps> = ({
       return;
     }
 
-    updateBoard(board.id, {
-      title,
-      statuses: statuses.map((name) => {
-        const existingStatus = board.statuses.find(
-          (status) => status.name === name
-        );
-        if (existingStatus) return existingStatus;
-        return {
-          id: uuidv4(),
-          name,
-          color: generateRandomColors(),
-        };
-      }),
-    });
+    const newBoardId = uuidv4();
+
+    if (dialogType === 'create') {
+      addBoard({
+        id: newBoardId,
+        title,
+        statuses: statuses.map((name) => {
+          return {
+            id: uuidv4(),
+            name,
+            color: generateRandomColors(),
+          };
+        }),
+      });
+
+      setCurrentBoardId(newBoardId);
+    } else {
+      updateBoard(board.id, {
+        title,
+        statuses: statuses.map((name) => {
+          const existingStatus = board.statuses.find(
+            (status) => status.name === name
+          );
+          if (existingStatus) return existingStatus;
+          return {
+            id: uuidv4(),
+            name,
+            color: generateRandomColors(),
+          };
+        }),
+      });
+    }
 
     if (closeDialog) closeDialog();
   };
@@ -94,7 +120,7 @@ const EditBoardDialog: React.FC<EditBoardDialogProps> = ({
   return (
     <div className="grid grid-cols-1 gap-[24px]">
       <Header variant="lg" className="flex-1">
-        Edit Board
+        {dialogType === 'create' ? 'Add New Board' : 'Edit Board'}
       </Header>
       <div>
         <Text variant="bold" className="text-medium-gray mb-[8px]">
@@ -115,11 +141,15 @@ const EditBoardDialog: React.FC<EditBoardDialogProps> = ({
         </Text>
         <DynamicTextInputList
           actionButtonText="+ Add New Column"
-          initialValues={[
-            ...board.statuses.map((status: Status) => {
-              return status.name;
-            }),
-          ]}
+          initialValues={
+            dialogType === 'create'
+              ? statuses
+              : [
+                  ...board.statuses.map((status) => {
+                    return status.name;
+                  }),
+                ]
+          }
           onInputsChange={(values: string[]) => {
             setStatuses(values);
           }}
@@ -138,4 +168,4 @@ const EditBoardDialog: React.FC<EditBoardDialogProps> = ({
   );
 };
 
-export default EditBoardDialog;
+export default CreateEditBoardDialog;

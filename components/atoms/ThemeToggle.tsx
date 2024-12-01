@@ -1,22 +1,22 @@
 import { Sun } from './svgs/Sun';
 import { Moon } from './svgs/Moon';
 import { cn } from '@/lib/utils';
+import useStore from '@/lib/store/useStore';
 
 interface ThemeToggleProps {
-  isDarkThemeActive: boolean;
-  toggleIsDarkThemeActive: () => void;
   className?: string;
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({
-  isDarkThemeActive,
-  toggleIsDarkThemeActive,
-  className,
-}) => {
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
+  const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
+  const toggleIsDarkThemeActive = useStore(
+    (state) => state.toggleIsDarkThemeActive
+  );
+
   return (
     <div
       className={cn(
-        'flex justify-center gap-[24px] items-center h-[48px] w-[calc(300px-48px)] ml-[24px] bg-background-pure rounded-[6px]',
+        'flex justify-center gap-[24px] items-center h-[48px] bg-background-pure rounded-[6px]',
         className
       )}
     >

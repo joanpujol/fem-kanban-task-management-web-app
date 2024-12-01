@@ -1,163 +1,251 @@
 'use client';
 
-import Button from '@/components/atoms/Button';
-import Header from '@/components/atoms/Header';
-import { Hide } from '@/components/atoms/svgs/Hide';
-import { Show } from '@/components/atoms/svgs/Show';
-import ThemeToggle from '@/components/atoms/ThemeToggle';
-import BoardDialog from '@/components/molecules/BoardDialog';
-import BoardSideMenu from '@/components/molecules/BoardSideMenu';
-import BoardTopBar from '@/components/molecules/BoardTopBar';
-import Column from '@/components/molecules/Column';
-import CreateBoardDialog from '@/components/organisms/dialogs/CreateBoardDialog';
-import EditBoardDialog from '@/components/organisms/dialogs/EditBoardDialog';
-import { Board } from '@/lib/models/Board';
 import useStore from '@/lib/store/useStore';
-import { cn } from '@/lib/utils';
+import Header from '@/components/atoms/Header';
 import { useState } from 'react';
+import BoardTopBar from '@/components/molecules/BoardTopBar';
+import { cn } from '@/lib/utils';
+import { Task } from '@/lib/models/Task';
+import ViewTaskDialog from '@/components/organisms/dialogs/ViewTaskDialog';
+import CreateEditTaskDialog from '@/components/organisms/dialogs/CreateEditTaskDialog';
+import DeleteTaskBoardDialog from '@/components/organisms/dialogs/DeleteTaskBoardDialog';
+import CreateEditBoardDialog from '@/components/organisms/dialogs/CreateEditBoardDialog';
+import BoardDialog from '@/components/molecules/BoardDialog';
+import MobileBoardMenu from '@/components/molecules/MobileBoardMenu';
+import BoardSideMenu from '@/components/molecules/BoardSideMenu';
+import { Logo } from '@/components/atoms/svgs/Logo';
+import Column from '@/components/molecules/Column';
+import Button from '@/components/atoms/Button';
 
-export default function Home() {
-  const allBoards = useStore((state) => state.boards) ?? [
-    {
-      id: '',
-      statuses: [],
-      title: '',
-    },
-  ];
+export default function ExamplePage() {
+  const allBoards = useStore((state) => state.boards);
   const allTasks = useStore((state) => state.tasks) ?? [];
   const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
-  const toggleIsDarkThemeActive = useStore(
-    (state) => state.toggleIsDarkThemeActive
+
+  const [currentBoardId, setCurrentBoardId] = useState(
+    () => allBoards[0]?.id || ''
   );
+  const board = allBoards.find((b) => b.id === currentBoardId) ?? {
+    id: '',
+    statuses: [],
+    title: '',
+  };
 
-  let board: Board = allBoards[0];
+  const tasks = allTasks.filter((task) => task.boardId === board.id);
 
-  const [currentBoardId, setCurrentBoardId] = useState(board.id);
+  const [currentTask, setCurrentTask] = useState(tasks[0]);
+
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  if (allBoards.length) {
-    board = allBoards.find((board) => board.id === currentBoardId) ?? board;
-  }
+  const [dialogType, setDialogType] = useState<'create' | 'edit'>('create');
+  const [deleteDialogType, setDeleteDialogType] = useState<'task' | 'board'>(
+    'task'
+  );
 
-  const tasks = allTasks.filter((task) => task.boardId === board?.id);
+  const [isCreateEditTaskDialogOpen, setIsCreateEditTaskDialogOpen] =
+    useState(false);
+  const [isDeleteTaskBoardDialogOpen, setDeleteIsTaskBoardDialogOpen] =
+    useState(false);
+  const [isCreateEditBoardDialogOpen, setIsCreateEditBoardDialogOpen] =
+    useState(false);
+  const [isMobileBoardMenuOpen, setIsMobileBoardMenuOpen] = useState(false);
+  const [isViewTaskDialogOpen, setIsViewTaskDialogOpen] = useState(false);
+
+  const handleOpenCreateEditTaskDialog = (
+    task: Task,
+    dialogType: 'create' | 'edit'
+  ) => {
+    setDialogType(dialogType);
+    setCurrentTask({ ...task });
+    setIsCreateEditTaskDialogOpen(true);
+    setIsViewTaskDialogOpen(false);
+  };
+
+  const handleOpenDeleteTaskBoardDialog = (
+    deleteDialogType: 'task' | 'board'
+  ) => {
+    setIsViewTaskDialogOpen(false);
+    setDeleteDialogType(deleteDialogType);
+    setDeleteIsTaskBoardDialogOpen(true);
+  };
+
+  const handleOpenCreateEditBoardDialog = (dialogType: 'create' | 'edit') => {
+    setDialogType(dialogType);
+    setIsCreateEditBoardDialogOpen(true);
+  };
 
   return (
-    <main
-      className={cn(
-        'min-h-screen grid',
-        isSidebarOpen ? 'grid-cols-[300px,1fr]' : 'grid-cols-[210px,1fr]',
-        isDarkThemeActive ? 'dark' : 'light'
-      )}
-    >
-      <BoardSideMenu
-        isSidebarOpen={isSidebarOpen}
-        allBoards={allBoards}
-        currentBoardId={currentBoardId}
-        setCurrentBoardId={setCurrentBoardId}
-      />
-      <div>
-        <BoardTopBar board={board} />
-        <div
+    <div className={cn(isDarkThemeActive ? 'dark' : 'light')}>
+      <div
+        className={cn(
+          'md:grid md:min-h-screen',
+          isSidebarOpen
+            ? 'md:grid-cols-[260px,1fr] lg:grid-cols-[300px,1fr]'
+            : 'md:grid-cols-[200px,1fr] lg:grid-cols-[210px,1fr]'
+        )}
+      >
+        <div className="md:pl-[24px] lg:pl-[32px] h-[96px] hidden md:flex items-center bg-background-soft border-r border-border-primary">
+          <Logo className="text-contrast-pure" />
+        </div>
+        <BoardTopBar
+          board={board}
+          handleOpenCreateEditTaskDialog={(dialogType: 'create' | 'edit') =>
+            handleOpenCreateEditTaskDialog(currentTask, dialogType)
+          }
+          handleOpenDeleteTaskBoardDialog={(
+            deleteDialogType: 'task' | 'board'
+          ) => handleOpenDeleteTaskBoardDialog(deleteDialogType)}
+          handleOpenCreateEditBoardDialog={(dialogType: 'create' | 'edit') =>
+            handleOpenCreateEditBoardDialog(dialogType)
+          }
+          toggleMobileBoardMenuOpen={() => {
+            setIsMobileBoardMenuOpen(!isMobileBoardMenuOpen);
+          }}
+          isMobileBoardMenuOpen={isMobileBoardMenuOpen}
+          mobileBoardMenu={
+            <MobileBoardMenu
+              handleOpenCreateEditBoardDialog={() =>
+                handleOpenCreateEditBoardDialog('create')
+              }
+              allBoards={allBoards}
+              currentBoardId={currentBoardId}
+              setCurrentBoardId={setCurrentBoardId}
+              open={isMobileBoardMenuOpen}
+              handleClose={() => setIsMobileBoardMenuOpen(false)}
+            />
+          }
+        />
+        <BoardSideMenu
+          isSidebarOpen={isSidebarOpen}
+          allBoards={allBoards}
+          currentBoardId={currentBoardId}
+          setCurrentBoardId={setCurrentBoardId}
+          setSidebarOpen={setSidebarOpen}
+        />
+        <main
           className={cn(
-            'flex flex-row gap-[24px] p-[24px] min-h-[calc(100vh-96px)] border-t border-border-primary bg-background-pure',
+            'overflow-y-auto h-[calc(100vh-64px)] md:h-[calc(100vh-96px)] overflow-x-auto bg-background-pure border-t border-border-primary',
             {
-              'ml-[-210px]': !isSidebarOpen,
+              'md:col-span-2': !isSidebarOpen,
             }
           )}
         >
-          <ThemeToggle
-            className={cn('absolute bottom-0 left-0 mb-[88px]', {
-              hidden: !isSidebarOpen,
-            })}
-            isDarkThemeActive={isDarkThemeActive}
-            toggleIsDarkThemeActive={toggleIsDarkThemeActive}
-          />
-          <div
-            onClick={() => setSidebarOpen(false)}
-            className={cn(
-              'absolute bottom-0 left-0 z-1 w-[calc(300px-24px)] group flex gap-[12px] items-center mb-[32px] pl-[24px] h-[48px] hover:bg-hover-secondary rounded-r-[24px] cursor-pointer',
-              {
-                hidden: !isSidebarOpen,
-              }
-            )}
-          >
-            <Hide className="text-medium-gray group-hover:text-main" />
-            <Header
-              variant="md"
-              className="text-medium-gray group-hover:text-main"
-            >
-              Hide Sidebar
-            </Header>
-          </div>
-          <div
-            onClick={() => setSidebarOpen(true)}
-            className={cn(
-              'absolute bottom-0 left-0 z-1 w-[56px] h-[48px] mb-[32px] flex items-center justify-center rounded-r-[24px] bg-main hover:bg-hover-primary cursor-pointer',
-              {
-                hidden: isSidebarOpen,
-              }
-            )}
-          >
-            <Show className="text-white" />
-          </div>
           {!board.id ? (
-            <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full h-full">
               <Header variant="lg" className="text-medium-gray mb-[32px]">
                 There are no boards. Create a new board to get started.
               </Header>
-              <BoardDialog
-                dialogTitle="Create Board Dialog"
-                dialogContent={
-                  <CreateBoardDialog setCurrentBoardId={setCurrentBoardId} />
-                }
+              <Button
+                onClick={() => handleOpenCreateEditBoardDialog('create')}
+                size="large"
               >
-                <Button size="large">+ Add New Board</Button>
-              </BoardDialog>
+                + Add New Board
+              </Button>
             </div>
           ) : undefined}
-          {board.id && board.statuses.length ? (
-            <>
-              {board.statuses.map((status) => {
-                return (
-                  <Column
-                    key={status.id}
-                    status={status}
-                    tasks={tasks.filter((task) => task.statusId === status.id)}
-                    className="self-start w-[280px]"
-                  />
-                );
-              })}
-              <div className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px]">
-                <BoardDialog
-                  dialogTitle="Edit Board Dialog"
-                  className="h-full"
-                  dialogContent={<EditBoardDialog board={board} />}
-                >
-                  <Header
-                    variant="xl"
-                    className="text-medium-gray flex justify-center items-center h-full group-hover:text-main"
-                  >
-                    + New Column
-                  </Header>
-                </BoardDialog>
-              </div>
-            </>
-          ) : undefined}
           {board.id && !board.statuses.length ? (
-            <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full h-full">
               <Header variant="lg" className="text-medium-gray mb-[32px]">
                 This board is empty. Create a new column to get started.
               </Header>
-              <BoardDialog
-                dialogTitle="Edit Board Dialog"
-                dialogContent={<EditBoardDialog board={board} />}
+              <Button
+                onClick={() => handleOpenCreateEditBoardDialog('edit')}
+                size="large"
               >
-                <Button size="large">+ Add New Column</Button>
-              </BoardDialog>
+                + Add New Column
+              </Button>
             </div>
           ) : undefined}
-        </div>
+          {board.id && board.statuses.length ? (
+            <div
+              className={
+                'flex gap-x-[24px] px-[16px] py-[24px] md:p-[24px] md:pb-[50px] min-w-max min-h-full'
+              }
+            >
+              {board.statuses.map((status) => (
+                <Column
+                  key={status.id}
+                  status={status}
+                  tasks={tasks}
+                  handleOpenDialog={(task: Task) => {
+                    setCurrentTask({ ...task });
+                    setIsViewTaskDialogOpen(true);
+                  }}
+                />
+              ))}
+              <div
+                onClick={() => handleOpenCreateEditBoardDialog('edit')}
+                className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px] mt-[39px] cursor-pointer"
+              >
+                <Header
+                  variant="xl"
+                  className="text-medium-gray flex justify-center items-center h-full group-hover:text-main"
+                >
+                  + New Column
+                </Header>
+              </div>
+            </div>
+          ) : undefined}
+        </main>
       </div>
-    </main>
+      <BoardDialog
+        open={isViewTaskDialogOpen}
+        onOpenChange={setIsViewTaskDialogOpen}
+        handleCloseDialog={() => setIsViewTaskDialogOpen(false)}
+        dialogTitle={'View Task Dialog'}
+        dialogDescription={'A Dialog to view task details'}
+      >
+        <ViewTaskDialog
+          board={board}
+          task={currentTask}
+          setCurrentTask={setCurrentTask}
+          handleOpenCreateEditTaskDialog={(dialogType: 'create' | 'edit') =>
+            handleOpenCreateEditTaskDialog(currentTask, dialogType)
+          }
+          handleOpenDeleteTaskBoardDialog={(
+            deleteDialogType: 'task' | 'board'
+          ) => handleOpenDeleteTaskBoardDialog(deleteDialogType)}
+        />
+      </BoardDialog>
+      <BoardDialog
+        open={isCreateEditTaskDialogOpen}
+        onOpenChange={setIsCreateEditTaskDialogOpen}
+        handleCloseDialog={() => setIsCreateEditTaskDialogOpen(false)}
+        dialogTitle={'CreateEdit Task Dialog'}
+        dialogDescription={'A Dialog to create and edit task details'}
+      >
+        <CreateEditTaskDialog
+          board={board}
+          task={currentTask}
+          dialogType={dialogType}
+        />
+      </BoardDialog>
+      <BoardDialog
+        open={isCreateEditBoardDialogOpen}
+        onOpenChange={setIsCreateEditBoardDialogOpen}
+        handleCloseDialog={() => setIsCreateEditBoardDialogOpen(false)}
+        dialogTitle={'CreateEdit Board Dialog'}
+        dialogDescription={'A Dialog to create and edit board details'}
+      >
+        <CreateEditBoardDialog
+          board={board}
+          dialogType={dialogType}
+          setCurrentBoardId={setCurrentBoardId}
+        />
+      </BoardDialog>
+      <BoardDialog
+        open={isDeleteTaskBoardDialogOpen}
+        onOpenChange={setDeleteIsTaskBoardDialogOpen}
+        handleCloseDialog={() => setDeleteIsTaskBoardDialogOpen(false)}
+        dialogTitle={'Delete TaskBoard Dialog'}
+        dialogDescription={'A Dialog to delete tasks and boards'}
+      >
+        <DeleteTaskBoardDialog
+          board={board}
+          task={currentTask}
+          dialogType={deleteDialogType}
+        />
+      </BoardDialog>
+    </div>
   );
 }
