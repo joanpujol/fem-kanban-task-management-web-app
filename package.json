@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource/plus-jakarta-sans": "^5.1.0",
+    "@kodingdotninja/use-tailwind-breakpoint": "^1.0.0",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-popover": "^1.1.2",
@@ -23,7 +24,6 @@
     "next": "15.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-use": "^17.5.1",
     "tailwind-merge": "^2.5.4",
     "tailwind-variants": "^0.2.1",
     "tailwindcss-animate": "^1.0.7",

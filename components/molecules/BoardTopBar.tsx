@@ -32,7 +32,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({
   mobileBoardMenu,
   className,
 }) => {
-  const breakpoint = useBreakpoint();
+  const isTablet = useBreakpoint('md');
 
   const isAddTasksButtonEnabled = Boolean(board.statuses.length);
 
@@ -44,11 +44,11 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({
       )}
     >
       <MobileLogo className="mr-[16px] md:hidden" />
-      <div className="flex items-center" onClick={breakpoint === "sm" ? toggleMobileBoardMenuOpen : undefined}>
-        <Header
-          variant={breakpoint === 'sm' ? 'lg' : 'xl'}
-          className="md:flex-1"
-        >
+      <div
+        className="flex items-center"
+        onClick={isTablet ? undefined : toggleMobileBoardMenuOpen}
+      >
+        <Header variant={isTablet ? 'xl' : 'lg'} className="md:flex-1">
           {board.title}
         </Header>
         <DownCaret
