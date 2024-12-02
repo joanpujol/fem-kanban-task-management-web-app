@@ -13,6 +13,7 @@ interface BoardSideMenuProps {
   isSidebarOpen: boolean;
   setCurrentBoardId: Dispatch<SetStateAction<string>>;
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleOpenCreateEditBoardDialog: () => void;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
   isSidebarOpen,
   setCurrentBoardId,
   setSidebarOpen,
+  handleOpenCreateEditBoardDialog,
   className,
 }) => {
   return (
@@ -73,6 +75,9 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
           ))}
 
           <BoardSideMenuItem
+            onClick={() => {
+              handleOpenCreateEditBoardDialog();
+            }}
             title="+ Create New Board"
             className="pl-[24px]"
             isHighlighted

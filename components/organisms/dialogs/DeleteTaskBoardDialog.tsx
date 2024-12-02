@@ -4,12 +4,14 @@ import Text from '@/components/atoms/Text';
 import { Board } from '@/lib/models/Board';
 import { Task } from '@/lib/models/Task';
 import useStore from '@/lib/store/useStore';
+import { Dispatch, SetStateAction } from 'react';
 
 interface DeleteTaskBoardDialogProps {
   board: Board;
   task: Task;
   dialogType: 'task' | 'board';
   closeDialog?: () => void;
+  setCurrentBoardId?: Dispatch<SetStateAction<string>>;
 }
 
 const DeleteTaskBoardDialog: React.FC<DeleteTaskBoardDialogProps> = ({
@@ -17,6 +19,7 @@ const DeleteTaskBoardDialog: React.FC<DeleteTaskBoardDialogProps> = ({
   task,
   dialogType,
   closeDialog,
+  setCurrentBoardId,
 }) => {
   const deleteTask = useStore((state) => state.deleteTask);
   const deleteBoard = useStore((state) => state.deleteBoard);
@@ -46,6 +49,7 @@ const DeleteTaskBoardDialog: React.FC<DeleteTaskBoardDialogProps> = ({
               deleteTask(task.id);
             } else {
               deleteBoard(board.id);
+              if (setCurrentBoardId) setCurrentBoardId('');
             }
             if (closeDialog) closeDialog();
           }}

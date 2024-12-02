@@ -97,11 +97,11 @@ const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
 
     if (dialogType === 'create') {
       addTask({
-        title,
+        title: result.data.title,
         description,
         statusId,
         boardId: board.id,
-        subtasks: subtasks.map((title) => ({
+        subtasks: result.data.subtasks.map((title) => ({
           id: uuidv4(),
           title,
           isCompleted: false,

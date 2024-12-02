@@ -2,7 +2,7 @@
 
 import useStore from '@/lib/store/useStore';
 import Header from '@/components/atoms/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BoardTopBar from '@/components/molecules/BoardTopBar';
 import { cn } from '@/lib/utils';
 import { Task } from '@/lib/models/Task';
@@ -30,6 +30,12 @@ export default function ExamplePage() {
     statuses: [],
     title: '',
   };
+
+  useEffect(() => {
+    if (!currentBoardId && allBoards.length) {
+      setCurrentBoardId(allBoards[0].id);
+    }
+  }, [allBoards, currentBoardId]);
 
   const tasks = allTasks.filter((task) => task.boardId === board.id);
 
@@ -121,6 +127,9 @@ export default function ExamplePage() {
           currentBoardId={currentBoardId}
           setCurrentBoardId={setCurrentBoardId}
           setSidebarOpen={setSidebarOpen}
+          handleOpenCreateEditBoardDialog={() =>
+            handleOpenCreateEditBoardDialog('create')
+          }
         />
         <main
           className={cn(
@@ -130,27 +139,35 @@ export default function ExamplePage() {
             }
           )}
         >
-          {!board.id ? (
-            <div className="flex flex-col items-center justify-center w-full h-full">
-              <Header variant="lg" className="text-medium-gray mb-[32px]">
+          {!allBoards.length && !board.id ? (
+            <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
+              <Header
+                variant="lg"
+                className="text-medium-gray mb-[24px] md:mb-[32px]"
+              >
                 There are no boards. Create a new board to get started.
               </Header>
               <Button
                 onClick={() => handleOpenCreateEditBoardDialog('create')}
                 size="large"
+                className="w-[174px]"
               >
                 + Add New Board
               </Button>
             </div>
           ) : undefined}
           {board.id && !board.statuses.length ? (
-            <div className="flex flex-col items-center justify-center w-full h-full">
-              <Header variant="lg" className="text-medium-gray mb-[32px]">
+            <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
+              <Header
+                variant="lg"
+                className="text-medium-gray mb-[24px] md:mb-[32px]"
+              >
                 This board is empty. Create a new column to get started.
               </Header>
               <Button
                 onClick={() => handleOpenCreateEditBoardDialog('edit')}
                 size="large"
+                className="w-[174px]"
               >
                 + Add New Column
               </Button>
@@ -244,6 +261,7 @@ export default function ExamplePage() {
           board={board}
           task={currentTask}
           dialogType={deleteDialogType}
+          setCurrentBoardId={setCurrentBoardId}
         />
       </BoardDialog>
     </div>

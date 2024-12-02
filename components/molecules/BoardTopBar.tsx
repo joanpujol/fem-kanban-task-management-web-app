@@ -56,6 +56,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({
             'ml-[8px] md:hidden transition-transform duration-150 ease-in-out',
             {
               'transform rotate-180': isMobileBoardMenuOpen,
+              hidden: !board.id,
             }
           )}
         />

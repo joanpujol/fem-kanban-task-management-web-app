@@ -45,3 +45,4 @@ Users are able to:
 - [Tailwind](https://tailwindcss.com/) - For styles
 - [shadcn/ui](https://ui.shadcn.com/) - Component library
 - [Zustand](https://github.com/pmndrs/zustand) - For state management
+- [Zod](https://zod.dev/) - Validation library

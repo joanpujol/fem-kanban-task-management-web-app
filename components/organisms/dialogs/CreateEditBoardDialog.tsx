@@ -86,8 +86,8 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
     if (dialogType === 'create') {
       addBoard({
         id: newBoardId,
-        title,
-        statuses: statuses.map((name) => {
+        title: result.data.title,
+        statuses: result.data.statuses.map((name) => {
           return {
             id: uuidv4(),
             name,
@@ -99,8 +99,8 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
       setCurrentBoardId(newBoardId);
     } else {
       updateBoard(board.id, {
-        title,
-        statuses: statuses.map((name) => {
+        title: result.data.title,
+        statuses: result.data.statuses.map((name) => {
           const existingStatus = board.statuses.find(
             (status) => status.name === name
           );
