@@ -16,22 +16,30 @@ import BoardSideMenu from '@/components/molecules/BoardSideMenu';
 import { Logo } from '@/components/atoms/svgs/Logo';
 import Column from '@/components/molecules/Column';
 import Button from '@/components/atoms/Button';
-import { DndProvider } from 'react-dnd-multi-backend'
+import { DndProvider } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from '@/lib/dndPipelines';
+import { loadDataFromJson } from '@/lib/loadDataFromJson';
+import { saveDataToLocalStorage } from '@/lib/saveDataToJson';
 
-export default function ExamplePage() {
+export default function MainPage() {
   const allBoards = useStore((state) => state.boards);
-  const allTasks = useStore((state) => state.tasks) ?? [];
+  const allTasks = useStore((state) => state.tasks);
+  const setBoardsAndTasks = useStore((state) => state.setBoardsAndTasks);
   const isDarkThemeActive = useStore((state) => state.isDarkThemeActive);
 
-  const [currentBoardId, setCurrentBoardId] = useState(
-    () => allBoards[0]?.id || ''
+  const [currentBoardId, setCurrentBoardId] = useState(() =>
+    allBoards.length ? allBoards[0]?.id : ''
   );
   const board = allBoards.find((b) => b.id === currentBoardId) ?? {
     id: '',
     statuses: [],
     title: '',
   };
+  const tasks = allTasks.filter((task) => task.boardId === board.id);
+
+  const [currentTask, setCurrentTask] = useState(tasks[0]);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!currentBoardId && allBoards.length) {
@@ -39,11 +47,20 @@ export default function ExamplePage() {
     }
   }, [allBoards, currentBoardId]);
 
-  const tasks = allTasks.filter((task) => task.boardId === board.id);
+  useEffect(() => {
+    const unsubscribe = useStore.subscribe((state) => {
+      saveDataToLocalStorage(state.boards, state.tasks);
+    });
 
-  const [currentTask, setCurrentTask] = useState(tasks[0]);
+    const fetchData = async () => {
+      const { boards, tasks } = await loadDataFromJson();
+      setBoardsAndTasks(boards, tasks);
+    };
 
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+    fetchData();
+    setLoading(false);
+    return () => unsubscribe();
+  }, [setBoardsAndTasks]);
 
   const [dialogType, setDialogType] = useState<'create' | 'edit'>('create');
   const [deleteDialogType, setDeleteDialogType] = useState<'task' | 'board'>(
@@ -81,6 +98,16 @@ export default function ExamplePage() {
     setDialogType(dialogType);
     setIsCreateEditBoardDialogOpen(true);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center w-screen h-screen text-center bg-background-pure">
+        <Header variant="xl" className="text-medium-gray">
+          Loading content...
+        </Header>
+      </div>
+    );
+  }
 
   return (
     <div className={cn(isDarkThemeActive ? 'dark' : 'light')}>

@@ -1,17 +1,35 @@
-import data from './data.json';
+import defaultData from './data.json';
 import { v4 as uuidv4 } from 'uuid';
 import { Board } from './models/Board';
 import { generateRandomColors } from './generateRandomColors';
 import { Task } from './models/Task';
 
-export function loadDataFromJson() {
+type StoredData = typeof defaultData;
+
+export async function loadDataFromJson(): Promise<{
+  boards: Board[];
+  tasks: Task[];
+}> {
+  let data: StoredData = {
+    boards: [],
+  };
+
+  if (typeof window !== 'undefined') {
+    const localStorageData = localStorage.getItem('boardData');
+    if (localStorageData) {
+      data = JSON.parse(localStorageData);
+    } else {
+      data = defaultData;
+    }
+  }
+
   const boards: Board[] = data.boards.map((board) => ({
     id: uuidv4(),
     title: board.name,
     statuses: board.columns.map((column) => ({
       id: uuidv4(),
       name: column.name,
-      color: generateRandomColors(),
+      color: column.color === '' ? generateRandomColors() : column.color,
     })),
   }));
 

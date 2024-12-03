@@ -2,14 +2,13 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '../models/Task';
-import { Subtask } from '../models/Subtask';
 import { Board } from '../models/Board';
-import { loadDataFromJson } from '../loadDataFromJson';
 
 interface AppState {
   isDarkThemeActive: boolean;
   boards: Board[];
   tasks: Task[];
+  setBoardsAndTasks: (boards: Board[], tasks: Task[]) => void;
   toggleIsDarkThemeActive: () => void;
   moveTask: (taskId: string, toStatusId: string, toIndexId?: string) => void;
   addBoard: (board: Board) => void;
@@ -18,20 +17,21 @@ interface AppState {
   addTask: (task: Omit<Task, 'id'>) => void;
   updateTask: (taskId: string, updates: Partial<Task>) => void;
   deleteTask: (taskId: string) => void;
-  updateSubtask: (
-    taskId: string,
-    subtaskId: string,
-    updates: Partial<Subtask>
-  ) => void;
 }
 
 const useStore = create<AppState>((set) => {
-  const { boards, tasks } = loadDataFromJson();
-
   return {
     isDarkThemeActive: false,
-    boards,
-    tasks,
+    boards: [],
+    tasks: [],
+
+    setBoardsAndTasks: (boards: Board[], tasks: Task[]) =>
+      set(
+        produce((state) => {
+          state.boards = boards;
+          state.tasks = tasks;
+        })
+      ),
 
     toggleIsDarkThemeActive: () =>
       set(
@@ -124,19 +124,6 @@ const useStore = create<AppState>((set) => {
       set(
         produce((state) => {
           state.tasks = state.tasks.filter((task: Task) => task.id !== taskId);
-        })
-      ),
-
-    updateSubtask: (taskId, subtaskId, updates) =>
-      set(
-        produce((state) => {
-          const task = state.tasks.find((task: Task) => task.id === taskId);
-          if (task) {
-            const subtask = task.subtasks.find(
-              (subtask: Subtask) => subtask.id === subtaskId
-            );
-            if (subtask) Object.assign(subtask, updates);
-          }
         })
       ),
   };
