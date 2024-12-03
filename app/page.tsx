@@ -16,6 +16,8 @@ import BoardSideMenu from '@/components/molecules/BoardSideMenu';
 import { Logo } from '@/components/atoms/svgs/Logo';
 import Column from '@/components/molecules/Column';
 import Button from '@/components/atoms/Button';
+import { DndProvider } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from '@/lib/dndPipelines';
 
 export default function ExamplePage() {
   const allBoards = useStore((state) => state.boards);
@@ -131,79 +133,81 @@ export default function ExamplePage() {
             handleOpenCreateEditBoardDialog('create')
           }
         />
-        <main
-          className={cn(
-            'overflow-y-auto h-[calc(100vh-64px)] md:h-[calc(100vh-96px)] overflow-x-auto bg-background-pure border-t border-border-primary',
-            {
-              'md:col-span-2': !isSidebarOpen,
-            }
-          )}
-        >
-          {!allBoards.length && !board.id ? (
-            <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
-              <Header
-                variant="lg"
-                className="text-medium-gray mb-[24px] md:mb-[32px]"
-              >
-                There are no boards. Create a new board to get started.
-              </Header>
-              <Button
-                onClick={() => handleOpenCreateEditBoardDialog('create')}
-                size="large"
-                className="w-[174px]"
-              >
-                + Add New Board
-              </Button>
-            </div>
-          ) : undefined}
-          {board.id && !board.statuses.length ? (
-            <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
-              <Header
-                variant="lg"
-                className="text-medium-gray mb-[24px] md:mb-[32px]"
-              >
-                This board is empty. Create a new column to get started.
-              </Header>
-              <Button
-                onClick={() => handleOpenCreateEditBoardDialog('edit')}
-                size="large"
-                className="w-[174px]"
-              >
-                + Add New Column
-              </Button>
-            </div>
-          ) : undefined}
-          {board.id && board.statuses.length ? (
-            <div
-              className={
-                'flex gap-x-[24px] px-[16px] py-[24px] md:p-[24px] md:pb-[50px] min-w-max min-h-full'
+        <DndProvider options={HTML5toTouch}>
+          <main
+            className={cn(
+              'overflow-y-auto h-[calc(100vh-64px)] md:h-[calc(100vh-96px)] overflow-x-auto bg-background-pure border-t border-border-primary',
+              {
+                'md:col-span-2': !isSidebarOpen,
               }
-            >
-              {board.statuses.map((status) => (
-                <Column
-                  key={status.id}
-                  status={status}
-                  tasks={tasks}
-                  handleOpenDialog={(task: Task) => {
-                    setCurrentTask({ ...task });
-                    setIsViewTaskDialogOpen(true);
-                  }}
-                />
-              ))}
-              <div
-                onClick={() => handleOpenCreateEditBoardDialog('edit')}
-                className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px] mt-[39px] cursor-pointer"
-              >
+            )}
+          >
+            {!allBoards.length && !board.id ? (
+              <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
                 <Header
-                  variant="xl"
-                  className="text-medium-gray flex justify-center items-center h-full group-hover:text-main"
+                  variant="lg"
+                  className="text-medium-gray mb-[24px] md:mb-[32px]"
                 >
-                  + New Column
+                  There are no boards. Create a new board to get started.
                 </Header>
+                <Button
+                  onClick={() => handleOpenCreateEditBoardDialog('create')}
+                  size="large"
+                  className="w-[174px]"
+                >
+                  + Add New Board
+                </Button>
               </div>
-            </div>
-          ) : undefined}
-        </main>
+            ) : undefined}
+            {board.id && !board.statuses.length ? (
+              <div className="flex flex-col items-center justify-center ml-[5%] md:ml-0 w-[90%] md:w-full h-full text-center">
+                <Header
+                  variant="lg"
+                  className="text-medium-gray mb-[24px] md:mb-[32px]"
+                >
+                  This board is empty. Create a new column to get started.
+                </Header>
+                <Button
+                  onClick={() => handleOpenCreateEditBoardDialog('edit')}
+                  size="large"
+                  className="w-[174px]"
+                >
+                  + Add New Column
+                </Button>
+              </div>
+            ) : undefined}
+            {board.id && board.statuses.length ? (
+              <div
+                className={
+                  'flex gap-x-[24px] px-[16px] py-[24px] md:p-[24px] md:pb-[50px] min-w-max min-h-full'
+                }
+              >
+                {board.statuses.map((status) => (
+                  <Column
+                    key={status.id}
+                    status={status}
+                    tasks={tasks}
+                    handleOpenDialog={(task: Task) => {
+                      setCurrentTask({ ...task });
+                      setIsViewTaskDialogOpen(true);
+                    }}
+                  />
+                ))}
+                <div
+                  onClick={() => handleOpenCreateEditBoardDialog('edit')}
+                  className="group w-[280px] bg-gradient-to-b from-new-column-color to-new-column-color/50 rounded-[6px] mt-[39px] cursor-pointer"
+                >
+                  <Header
+                    variant="xl"
+                    className="text-medium-gray flex justify-center items-center h-full group-hover:text-main"
+                  >
+                    + New Column
+                  </Header>
+                </div>
+              </div>
+            ) : undefined}
+          </main>
+        </DndProvider>
       </div>
       <BoardDialog
         open={isViewTaskDialogOpen}
