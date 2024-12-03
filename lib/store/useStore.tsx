@@ -46,36 +46,23 @@ const useStore = create<AppState>((set) => {
           const taskToMoveIndex = state.tasks.findIndex(
             (task: Task) => task.id === taskId
           );
-          if (taskToMoveIndex === -1) return;
-          const taskToMove = state.tasks[taskToMoveIndex];
 
-          // Find the index of the task we're dropping onto
-          const targetIndex =
-            state.tasks.findIndex((task: Task) => task.id === toIndexId) ?? 0;
-
-          // Remove the task from its current position
-          state.tasks.splice(taskToMoveIndex, 1);
-
-          // Update the task's status
+          const taskToMove = { ...state.tasks[taskToMoveIndex] };
           taskToMove.statusId = toStatusId;
 
-          // Insert the task at the target position
-          state.tasks.splice(targetIndex, 0, taskToMove);
+          // Remove the task from its current position
+          const newTasks = state.tasks.filter(
+            (_: Task, index: number) => index !== taskToMoveIndex
+          );
 
-          // If the task was moved to a later position, we need to adjust the target index
-          // because the removal of the task shifted the array
-          const adjustedTargetIndex =
-            taskToMoveIndex < targetIndex ? targetIndex - 1 : targetIndex;
+          // Determine the target index for insertion
+          const targetIndex = toIndexId
+            ? newTasks.findIndex((task: Task) => task.id === toIndexId)
+            : newTasks.length; // If no target ID, append to the end
 
-          // Shifts tasks if necessary
-          if (taskToMoveIndex !== adjustedTargetIndex) {
-            const tasksToShift = state.tasks.slice(adjustedTargetIndex + 1);
-            tasksToShift.forEach((task: Task, index: number) => {
-              if (task.statusId === toStatusId) {
-                state.tasks[adjustedTargetIndex + 1 + index] = task;
-              }
-            });
-          }
+          newTasks.splice(targetIndex, 0, taskToMove);
+
+          state.tasks = newTasks;
         })
       ),
 
