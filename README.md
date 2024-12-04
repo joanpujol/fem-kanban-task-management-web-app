@@ -33,7 +33,7 @@ Users are able to:
 
 ### Links
 
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Live Site URL: [https://fem-kanban-task-management-web-app.vercel.app/](https://fem-kanban-task-management-web-app.vercel.app/)
 
 ## My process
 
