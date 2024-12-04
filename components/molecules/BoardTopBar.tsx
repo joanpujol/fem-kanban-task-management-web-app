@@ -39,7 +39,7 @@ const BoardTopBar: React.FC<BoardTopBarProps> = ({
   return (
     <header
       className={cn(
-        'flex items-center bg-background-soft h-[64px] md:h-[96px] px-[16px] md:px-[24px]',
+        'flex items-center bg-background-soft h-[64px] md:h-[80px] lg:h-[96px] px-[16px] md:px-[24px]',
         className
       )}
     >

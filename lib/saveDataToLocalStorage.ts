@@ -1,8 +1,13 @@
 import { Board } from './models/Board';
 import { Task } from './models/Task';
 
-export function saveDataToLocalStorage(boards: Board[], tasks: Task[]): void {
+export function saveDataToLocalStorage(
+  isDarkThemeActive: boolean,
+  boards: Board[],
+  tasks: Task[]
+): void {
   const dataToSave = {
+    isDarkThemeActive: isDarkThemeActive,
     boards: boards.map((board) => ({
       id: board.id,
       name: board.title,

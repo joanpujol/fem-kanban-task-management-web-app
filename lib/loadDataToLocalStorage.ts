@@ -5,6 +5,7 @@ import { generateRandomColors } from './generateRandomColors';
 import { Task } from './models/Task';
 
 type StoredData = {
+  isDarkThemeActive: boolean;
   boards: {
     id?: string;
     name: string;
@@ -28,10 +29,12 @@ type StoredData = {
 };
 
 export async function loadDataToLocalStorage(): Promise<{
+  isDarkThemeActive: boolean;
   boards: Board[];
   tasks: Task[];
 }> {
   let data: StoredData = {
+    isDarkThemeActive: false,
     boards: [],
   };
 
@@ -74,5 +77,5 @@ export async function loadDataToLocalStorage(): Promise<{
     )
   );
 
-  return { boards, tasks };
+  return { isDarkThemeActive: data.isDarkThemeActive, boards, tasks };
 }

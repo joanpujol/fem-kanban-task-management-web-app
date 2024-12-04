@@ -49,12 +49,17 @@ export default function MainPage() {
 
   useEffect(() => {
     const unsubscribe = useStore.subscribe((state) => {
-      saveDataToLocalStorage(state.boards, state.tasks);
+      saveDataToLocalStorage(
+        state.isDarkThemeActive,
+        state.boards,
+        state.tasks
+      );
     });
 
     const fetchData = async () => {
-      const { boards, tasks } = await loadDataToLocalStorage();
-      setBoardsAndTasks(boards, tasks);
+      const { isDarkThemeActive, boards, tasks } =
+        await loadDataToLocalStorage();
+      setBoardsAndTasks(isDarkThemeActive, boards, tasks);
     };
 
     fetchData();
@@ -113,13 +118,13 @@ export default function MainPage() {
     <div className={cn(isDarkThemeActive ? 'dark' : 'light')}>
       <div
         className={cn(
-          'md:grid md:min-h-screen',
+          'md:grid',
           isSidebarOpen
             ? 'md:grid-cols-[260px,1fr] lg:grid-cols-[300px,1fr]'
             : 'md:grid-cols-[200px,1fr] lg:grid-cols-[210px,1fr]'
         )}
       >
-        <div className="md:pl-[24px] lg:pl-[32px] h-[96px] hidden md:flex items-center bg-background-soft border-r border-border-primary">
+        <div className="md:pl-[24px] lg:pl-[32px] md:h-[80px] lg:h-[96px] hidden md:flex items-center bg-background-soft border-r border-border-primary">
           <Logo className="text-contrast-pure" />
         </div>
         <BoardTopBar

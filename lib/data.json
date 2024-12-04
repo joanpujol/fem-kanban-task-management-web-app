@@ -1,4 +1,5 @@
 {
+  "isDarkThemeActive": false,
   "boards": [
     {
       "name": "Platform Launch",

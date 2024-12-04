@@ -8,7 +8,11 @@ interface AppState {
   isDarkThemeActive: boolean;
   boards: Board[];
   tasks: Task[];
-  setBoardsAndTasks: (boards: Board[], tasks: Task[]) => void;
+  setBoardsAndTasks: (
+    isDarkThemeActive: boolean,
+    boards: Board[],
+    tasks: Task[]
+  ) => void;
   toggleIsDarkThemeActive: () => void;
   moveTask: (taskId: string, toStatusId: string, toIndexId?: string) => void;
   addBoard: (board: Board) => void;
@@ -25,9 +29,14 @@ const useStore = create<AppState>((set) => {
     boards: [],
     tasks: [],
 
-    setBoardsAndTasks: (boards: Board[], tasks: Task[]) =>
+    setBoardsAndTasks: (
+      isDarkThemeActive: boolean,
+      boards: Board[],
+      tasks: Task[]
+    ) =>
       set(
         produce((state) => {
+          state.isDarkThemeActive = isDarkThemeActive;
           state.boards = boards;
           state.tasks = tasks;
         })

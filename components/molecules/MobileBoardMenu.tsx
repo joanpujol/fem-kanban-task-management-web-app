@@ -36,9 +36,11 @@ const MobileBoardMenu: React.FC<MobileBoardMenuProps> = ({
         }}
       >
         <Header
-          className="h-[48px] flex items-center pl-[24px]"
+          className="h-[48px] flex items-center pl-[24px] mb-[4px]"
           variant="sm"
-        >{`ALL BOARDS (${allBoards.length})`}</Header>
+        >
+          {`ALL BOARDS (${allBoards.length})`}
+        </Header>
         {allBoards.map((board) => (
           <BoardSideMenuItem
             onClick={() => {

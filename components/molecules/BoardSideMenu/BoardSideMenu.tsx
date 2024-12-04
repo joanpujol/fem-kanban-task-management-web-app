@@ -32,7 +32,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
         {isSidebarOpen ? (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="md:w-[calc(260px-24px)] lg:w-[calc(300px-24px)] group hidden md:flex gap-[12px] items-center pl-[24px] h-[48px] hover:bg-hover-secondary rounded-r-[24px] cursor-pointer"
+            className="md:w-[calc(260px-24px)] lg:w-[calc(300px-32px)] group hidden md:flex gap-[12px] items-center md:pl-[24px] lg:pl-[32px] h-[48px] hover:bg-hover-secondary rounded-r-[24px] cursor-pointer"
           >
             <Hide className="text-medium-gray group-hover:text-main" />
             <Header
@@ -61,7 +61,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
           )}
         >
           <Header
-            className="h-[48px] flex items-center pl-[24px]"
+            className="h-[48px] flex items-center md:pl-[24px] lg:pl-[32px] mb-[4px]"
             variant="sm"
           >{`ALL BOARDS (${allBoards.length})`}</Header>
           {allBoards.map((board) => (
@@ -69,7 +69,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
               onClick={() => setCurrentBoardId(board.id)}
               key={board.id}
               title={board.title}
-              className="pl-[24px]"
+              className="md:pl-[24px] lg:pl-[32px]"
               isCurrent={currentBoardId === board.id}
             />
           ))}
@@ -79,7 +79,7 @@ const BoardSideMenu: React.FC<BoardSideMenuProps> = ({
               handleOpenCreateEditBoardDialog();
             }}
             title="+ Create New Board"
-            className="pl-[24px]"
+            className="md:pl-[24px] lg:pl-[32px]"
             isHighlighted
           />
           <ThemeToggle className="mt-auto ml-[24px] mb-[88px]" />

@@ -38,16 +38,16 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             error && 'border-red'
           )}
           ref={ref}
-          placeholder={placeholder}
+          placeholder={error ? undefined : placeholder}
           value={value}
           type="text"
           {...props}
         />
-        {error && (
-          <div className="absolute text-red top-[9px] right-[16px] font-medium text-sm leading-lg pl-[16px] bg-white/75">
+        {error && !value ? (
+          <div className="absolute text-red top-[9px] right-[16px] font-medium text-sm leading-lg">
             {error}
           </div>
-        )}
+        ) : undefined}
       </div>
     );
   }
