@@ -8,7 +8,9 @@ import { Task } from '@/lib/models/Task';
 import TextInput from '@/components/atoms/TextInput';
 import BoardTextArea from '@/components/atoms/BoardTextArea';
 import Button from '@/components/atoms/Button';
-import DynamicTextInputList from '../../molecules/DynamicTextInputList';
+import DynamicTextInputList, {
+  DynamicTextInput,
+} from '../../molecules/DynamicTextInputList';
 import { Subtask } from '@/lib/models/Subtask';
 import { useState } from 'react';
 import { Board } from '@/lib/models/Board';
@@ -47,10 +49,22 @@ const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
   const [description, setDescription] = useState(
     dialogType === 'create' ? '' : task.description
   );
-  const [subtasks, setSubtasks] = useState(
+  const [subtasks, setSubtasks] = useState<DynamicTextInput[]>(
     dialogType === 'create'
-      ? ['', '']
-      : task.subtasks.map((subtask) => subtask.title)
+      ? [
+          {
+            id: uuidv4(),
+            title: '',
+          },
+          {
+            id: uuidv4(),
+            title: '',
+          },
+        ]
+      : task.subtasks.map((subtask) => ({
+          title: subtask.title,
+          id: subtask.id,
+        }))
   );
   const statuses = board.statuses;
   const [statusId, setStatusId] = useState(
@@ -70,7 +84,7 @@ const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
   const onSaveChangesButtonClicked = () => {
     const taskData: TaskSchemaType = {
       title,
-      subtasks,
+      subtasks: subtasks.map((subtask) => subtask.title),
     };
 
     const result = TaskSchema.safeParse(taskData);
@@ -97,13 +111,13 @@ const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
 
     if (dialogType === 'create') {
       addTask({
-        title: result.data.title,
+        title,
         description,
         statusId,
         boardId: board.id,
-        subtasks: result.data.subtasks.map((title) => ({
-          id: uuidv4(),
-          title,
+        subtasks: subtasks.map((subtask) => ({
+          id: subtask.id,
+          title: subtask.title,
           isCompleted: false,
         })),
       });
@@ -111,12 +125,13 @@ const CreateEditTaskDialog: React.FC<CreateEditTaskDialogProps> = ({
       updateTask(task.id, {
         title,
         description,
-        subtasks: subtasks.map((title) => ({
-          id: uuidv4(),
-          title,
+        subtasks: subtasks.map((subtask) => ({
+          id: subtask.id,
+          title: subtask.title,
           isCompleted:
-            task.subtasks?.find((subtask) => subtask.title === title)
-              ?.isCompleted || false,
+            task.subtasks?.find(
+              (storedSubtasks) => storedSubtasks.id === subtask.id
+            )?.isCompleted || false,
         })),
         statusId,
       });
@@ -166,19 +181,15 @@ recharge the batteries a little."
           actionButtonText="+ Add New Subtask"
           initialValues={
             dialogType === 'create'
-              ? [
-                  ...subtasks.map((subtask: string) => {
-                    return subtask;
-                  }),
-                ]
+              ? subtasks
               : [
                   ...task.subtasks.map((subtask: Subtask) => {
-                    return subtask.title;
+                    return { id: subtask.id, title: subtask.title };
                   }),
                 ]
           }
-          onInputsChange={(values: string[]) => {
-            setSubtasks(values);
+          onInputsChange={(newInputs: DynamicTextInput[]) => {
+            setSubtasks(newInputs);
           }}
           errors={errors.subtasks}
         />

@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import TextInput from '../atoms/TextInput';
 import Button from '../atoms/Button';
+import { v4 as uuidv4 } from 'uuid';
 import { Close } from '../atoms/svgs/Close';
 
+export type DynamicTextInput = {
+  id: string;
+  title: string;
+};
+
 interface DynamicTextInputListProps {
-  onInputsChange: (newInputs: string[]) => void;
+  onInputsChange: (newInputs: DynamicTextInput[]) => void;
   actionButtonText: string;
-  initialValues?: string[];
+  initialValues?: DynamicTextInput[];
   errors?: string[];
 }
 
@@ -16,18 +22,39 @@ const DynamicTextInputList: React.FC<DynamicTextInputListProps> = ({
   initialValues,
   errors = [],
 }) => {
-  const [inputs, setInputs] = useState(initialValues ?? ['']);
+  const [inputs, setInputs] = useState(
+    initialValues ?? [
+      {
+        id: uuidv4(),
+        title: '',
+      },
+    ]
+  );
 
-  const handleInputChange = (index: number, value: string) => {
-    const newInputs = [...inputs];
-    newInputs[index] = value;
+  const handleInputChange = (id: string, value: string) => {
+    const newInputs = inputs.map((input) =>
+      input.id === id ? { ...input, title: value } : input
+    );
+
     setInputs(newInputs);
     onInputsChange(newInputs);
   };
 
   const addInput = () => {
-    setInputs([...inputs, '']);
-    onInputsChange([...inputs, '']);
+    setInputs([
+      ...inputs,
+      {
+        id: uuidv4(),
+        title: '',
+      },
+    ]);
+    onInputsChange([
+      ...inputs,
+      {
+        id: uuidv4(),
+        title: '',
+      },
+    ]);
   };
 
   const removeInput = (index: number) => {
@@ -45,9 +72,9 @@ const DynamicTextInputList: React.FC<DynamicTextInputListProps> = ({
             className="flex justify-between items-center gap-[16px]"
           >
             <TextInput
-              value={input}
+              value={input.title}
               className="max-w-full w-full"
-              onChange={(e) => handleInputChange(index, e.target.value)}
+              onChange={(e) => handleInputChange(input.id, e.target.value)}
               placeholder={'e.g. Add some text to this subtask'}
               error={
                 errors.length > index && errors[index].length

@@ -5,7 +5,9 @@ import Text from '@/components/atoms/Text';
 import useStore from '@/lib/store/useStore';
 import TextInput from '@/components/atoms/TextInput';
 import Button from '@/components/atoms/Button';
-import DynamicTextInputList from '../../molecules/DynamicTextInputList';
+import DynamicTextInputList, {
+  DynamicTextInput,
+} from '../../molecules/DynamicTextInputList';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { generateRandomColors } from '@/lib/generateRandomColors';
 import { Board } from '@/lib/models/Board';
@@ -46,17 +48,29 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
   const [title, setTitle] = useState(
     dialogType === 'create' ? '' : board.title
   );
-  const [statuses, setStatuses] = useState(
+  const [statuses, setStatuses] = useState<DynamicTextInput[]>(
     dialogType === 'create'
-      ? ['Todo', 'Doing']
-      : board.statuses.map((status) => status.name)
+      ? [
+          {
+            id: uuidv4(),
+            title: 'Todo',
+          },
+          {
+            id: uuidv4(),
+            title: 'Doing',
+          },
+        ]
+      : board.statuses.map((status) => ({
+          title: status.name,
+          id: status.id,
+        }))
   );
   const [errors, setErrors] = useState<Partial<BoardSchemaType>>({});
 
   const onSaveChangesButtonClicked = () => {
     const boardData: BoardSchemaType = {
       title,
-      statuses,
+      statuses: statuses.map((status) => status.title),
     };
 
     const result = BoardSchema.safeParse(boardData);
@@ -86,11 +100,11 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
     if (dialogType === 'create') {
       addBoard({
         id: newBoardId,
-        title: result.data.title,
-        statuses: result.data.statuses.map((name) => {
+        title,
+        statuses: statuses.map((status) => {
           return {
-            id: uuidv4(),
-            name,
+            id: status.id,
+            name: status.title,
             color: generateRandomColors(),
           };
         }),
@@ -99,15 +113,11 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
       setCurrentBoardId(newBoardId);
     } else {
       updateBoard(board.id, {
-        title: result.data.title,
-        statuses: result.data.statuses.map((name) => {
-          const existingStatus = board.statuses.find(
-            (status) => status.name === name
-          );
-          if (existingStatus) return existingStatus;
+        title,
+        statuses: statuses.map((status) => {
           return {
-            id: uuidv4(),
-            name,
+            id: status.id,
+            name: status.title,
             color: generateRandomColors(),
           };
         }),
@@ -146,12 +156,15 @@ const CreateEditBoardDialog: React.FC<CreateEditBoardDialogProps> = ({
               ? statuses
               : [
                   ...board.statuses.map((status) => {
-                    return status.name;
+                    return {
+                      id: status.id,
+                      title: status.name,
+                    };
                   }),
                 ]
           }
-          onInputsChange={(values: string[]) => {
-            setStatuses(values);
+          onInputsChange={(newInputs: DynamicTextInput[]) => {
+            setStatuses(newInputs);
           }}
           errors={errors.statuses}
         />
