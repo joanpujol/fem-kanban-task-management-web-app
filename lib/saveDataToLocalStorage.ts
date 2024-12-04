@@ -4,8 +4,10 @@ import { Task } from './models/Task';
 export function saveDataToLocalStorage(boards: Board[], tasks: Task[]): void {
   const dataToSave = {
     boards: boards.map((board) => ({
+      id: board.id,
       name: board.title,
       columns: board.statuses.map((status) => ({
+        id: status.id,
         name: status.name,
         color: status.color,
         tasks: tasks
@@ -13,9 +15,11 @@ export function saveDataToLocalStorage(boards: Board[], tasks: Task[]): void {
             (task) => task.boardId === board.id && task.statusId === status.id
           )
           .map((task) => ({
+            id: task.id,
             title: task.title,
             description: task.description,
             subtasks: task.subtasks.map((subtask) => ({
+              id: subtask.id,
               title: subtask.title,
               isCompleted: subtask.isCompleted,
             })),

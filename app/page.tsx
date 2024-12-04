@@ -18,8 +18,8 @@ import Column from '@/components/molecules/Column';
 import Button from '@/components/atoms/Button';
 import { DndProvider } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from '@/lib/dndPipelines';
-import { loadDataFromJson } from '@/lib/loadDataFromJson';
-import { saveDataToLocalStorage } from '@/lib/saveDataToJson';
+import { loadDataToLocalStorage } from '@/lib/loadDataToLocalStorage';
+import { saveDataToLocalStorage } from '@/lib/saveDataToLocalStorage';
 
 export default function MainPage() {
   const allBoards = useStore((state) => state.boards);
@@ -53,7 +53,7 @@ export default function MainPage() {
     });
 
     const fetchData = async () => {
-      const { boards, tasks } = await loadDataFromJson();
+      const { boards, tasks } = await loadDataToLocalStorage();
       setBoardsAndTasks(boards, tasks);
     };
 

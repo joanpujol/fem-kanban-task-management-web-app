@@ -4,9 +4,30 @@ import { Board } from './models/Board';
 import { generateRandomColors } from './generateRandomColors';
 import { Task } from './models/Task';
 
-type StoredData = typeof defaultData;
+type StoredData = {
+  boards: {
+    id?: string;
+    name: string;
+    columns: {
+      id?: string;
+      name: string;
+      color: string;
+      tasks: {
+        id?: string;
+        title: string;
+        description: string;
+        status: string;
+        subtasks: {
+          id?: string;
+          title: string;
+          isCompleted: boolean;
+        }[];
+      }[];
+    }[];
+  }[];
+};
 
-export async function loadDataFromJson(): Promise<{
+export async function loadDataToLocalStorage(): Promise<{
   boards: Board[];
   tasks: Task[];
 }> {
@@ -24,10 +45,10 @@ export async function loadDataFromJson(): Promise<{
   }
 
   const boards: Board[] = data.boards.map((board) => ({
-    id: uuidv4(),
+    id: board.id ?? uuidv4(),
     title: board.name,
     statuses: board.columns.map((column) => ({
-      id: uuidv4(),
+      id: column.id ?? uuidv4(),
       name: column.name,
       color: column.color === '' ? generateRandomColors() : column.color,
     })),
@@ -36,7 +57,7 @@ export async function loadDataFromJson(): Promise<{
   const tasks: Task[] = data.boards.flatMap((board) =>
     board.columns.flatMap((column) =>
       column.tasks.map((task) => ({
-        id: uuidv4(),
+        id: task.id ?? uuidv4(),
         title: task.title,
         statusId:
           boards
@@ -45,7 +66,7 @@ export async function loadDataFromJson(): Promise<{
         boardId: boards.find((b) => b.title === board.name)?.id || '',
         description: task.description,
         subtasks: task.subtasks.map((subtask) => ({
-          id: uuidv4(),
+          id: subtask.id ?? uuidv4(),
           title: subtask.title,
           isCompleted: subtask.isCompleted,
         })),
